@@ -40,4 +40,5 @@ dependencies {
     implementation 'dev.nextftc:hardware:1.0.0'
     implementation 'dev.nextftc:control:1.0.0'
     implementation 'dev.nextftc:bindings:1.0.1'
+    implementation "com.acmerobotics.dashboard:dashboard:0.5.0"
 }

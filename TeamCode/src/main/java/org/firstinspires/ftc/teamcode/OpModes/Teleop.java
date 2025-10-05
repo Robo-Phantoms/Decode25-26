@@ -17,6 +17,7 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.driving.DifferentialTankDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
+import dev.nextftc.hardware.impl.ServoEx;
 
 
 @TeleOp(name="Teleop")
@@ -36,6 +37,7 @@ public class Teleop extends NextFTCOpMode {
     private MotorEx rightBack = new MotorEx("rightBack").reversed();
     private MotorGroup leftMotors = new MotorGroup(leftFront, leftBack);
     private MotorGroup rightMotors = new MotorGroup(rightFront, rightBack);
+    private ServoEx bumper = new ServoEx("bumper");
 
     @Override
     public void onStartButtonPressed() {
@@ -64,7 +66,12 @@ public class Teleop extends NextFTCOpMode {
 
         button(() -> gamepad2.b)
                 .toggleOnBecomesTrue()
-                .whenBecomesTrue(Outtake.INSTANCE.shootArtifact)
+                .whenTrue(Outtake.INSTANCE.shootArtifact)
                 .whenFalse(Outtake.INSTANCE.stopShooting);
+
+        button(() -> gamepad2.x)
+                .toggleOnBecomesTrue()
+                .whenTrue(() -> bumper.setPosition(0))
+                .whenFalse(() -> bumper.setPosition(0.5));
     }
 }

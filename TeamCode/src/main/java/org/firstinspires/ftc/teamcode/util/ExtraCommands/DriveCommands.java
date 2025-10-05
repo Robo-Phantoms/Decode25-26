@@ -11,15 +11,15 @@ public class DriveCommands {
 
     public static void strafeLeft(Controllable lfMotor, Controllable rfMotor, Controllable lbMotor, Controllable rbMotor) {
         rfMotor.setPower(POWER);
-        lfMotor.setPower(-POWER);
-        lbMotor.setPower(POWER);
+        lfMotor.setPower(POWER);
+        lbMotor.setPower(-POWER);
         rbMotor.setPower(-POWER);
     }
 
     public static void strafeRight(Controllable lfMotor, Controllable rfMotor, Controllable lbMotor, Controllable rbMotor) {
         rfMotor.setPower(-POWER);
-        lfMotor.setPower(POWER);
-        lbMotor.setPower(-POWER);
+        lfMotor.setPower(-POWER);
+        lbMotor.setPower(POWER);
         rbMotor.setPower(POWER);
     }
 
