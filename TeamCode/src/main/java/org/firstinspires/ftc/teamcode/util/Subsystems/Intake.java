@@ -8,7 +8,7 @@ import dev.nextftc.hardware.powerable.SetPower;
 public class Intake implements Subsystem {
     public static Intake INSTANCE = new Intake();
     private Intake() {}
-    private MotorEx rightIntake = new MotorEx("intake");
+    private MotorEx rightIntake = new MotorEx("Intake");
 
     public Command intakeArtifact(float power){
         return new SetPower(rightIntake, power);

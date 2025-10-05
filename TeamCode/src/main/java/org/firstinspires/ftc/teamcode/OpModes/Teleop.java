@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.util.ExtraCommands.*;
 import org.firstinspires.ftc.teamcode.util.Subsystems.*;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
@@ -18,6 +19,7 @@ import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.driving.DifferentialTankDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.impl.ServoEx;
+import dev.nextftc.hardware.positionable.SetPosition;
 
 
 @TeleOp(name="Teleop")
@@ -38,6 +40,11 @@ public class Teleop extends NextFTCOpMode {
     private MotorGroup leftMotors = new MotorGroup(leftFront, leftBack);
     private MotorGroup rightMotors = new MotorGroup(rightFront, rightBack);
     private ServoEx bumper = new ServoEx("bumper");
+
+    private ServoEx arm =new ServoEx("arm");
+    public Command setArmPos(double pos){
+        return new SetPosition(arm, pos);
+    }
 
     @Override
     public void onStartButtonPressed() {
@@ -67,8 +74,8 @@ public class Teleop extends NextFTCOpMode {
     }
 
     public void gamepad2(){
-        range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
-                .whenFalse(() -> Intake.INSTANCE.intakeArtifact(gamepad2.right_stick_y))
+        range(() -> gamepad2.right_stick_y ).inRange(-0.01, 0.01)
+                .whenFalse(() -> Intake.INSTANCE.intakeArtifact(gamepad2.right_stick_y).schedule()  )
                 .whenTrue(() -> Intake.INSTANCE.stopIntake());
 
         button(() -> gamepad2.b)
@@ -80,5 +87,12 @@ public class Teleop extends NextFTCOpMode {
                 .toggleOnBecomesTrue()
                 .whenTrue(Outtake.INSTANCE.moveBumper)
                 .whenFalse(Outtake.INSTANCE.reverseBumper);
+
+        button(() -> gamepad2.a)
+                .whenTrue(new SequentialGroup(
+                        setArmPos(0),
+                        setArmPos(0.2)
+                        ));
+
     }
 }

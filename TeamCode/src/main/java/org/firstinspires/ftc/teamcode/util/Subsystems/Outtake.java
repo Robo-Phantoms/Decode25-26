@@ -20,7 +20,7 @@ public class Outtake implements Subsystem {
 
     private MotorEx flywheelLeft = new MotorEx("flywheelLeft").reversed();
     private MotorEx flywheelRight = new MotorEx("flywheelRight");
-    private MotorGroup flyWheelOuttake = new MotorGroup(flywheelLeft, flywheelRight);
+    private MotorGroup flyWheelOuttake = new MotorGroup(flywheelRight, flywheelLeft);
     private ServoEx bumper = new ServoEx("bumper");
     public static double kp, ki, kd;
     public static double kv, ka, ks;
