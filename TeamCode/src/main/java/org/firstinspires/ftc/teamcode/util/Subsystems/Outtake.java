@@ -35,6 +35,7 @@ public class Outtake implements Subsystem {
     public Command shootArtifact = new SetPower(flyWheelOuttake, 0.6).requires(flyWheelOuttake);
     public Command stopShooting = new SetPower(flyWheelOuttake, 0).requires(flyWheelOuttake);
     public Command moveBumper = new SetPosition(bumper, 0.5).requires(bumper);
+    public Command reverseBumper = new SetPosition(bumper, 0).requires(bumper);
 
     @Override
     public void periodic(){

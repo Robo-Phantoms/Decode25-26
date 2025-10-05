@@ -41,6 +41,11 @@ public class Teleop extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
+        gamepad1();
+        gamepad2();
+    }
+
+    public void gamepad1(){
         Command driverControlled = new DifferentialTankDriverControlled(leftMotors, rightMotors, Gamepads.gamepad1().leftStickY(), Gamepads.gamepad1().rightStickY());
         driverControlled.schedule();
 
@@ -59,7 +64,9 @@ public class Teleop extends NextFTCOpMode {
         button(()  -> gamepad1.a)
                 .whenTrue(() -> DriveCommands.backward(leftFront, rightFront, leftBack, rightBack))
                 .whenBecomesFalse(() -> DriveCommands.stop(leftFront, rightFront, leftBack, rightBack));
+    }
 
+    public void gamepad2(){
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
                 .whenFalse(() -> Intake.INSTANCE.intakeArtifact(gamepad2.right_stick_y))
                 .whenTrue(() -> Intake.INSTANCE.stopIntake());
@@ -71,7 +78,7 @@ public class Teleop extends NextFTCOpMode {
 
         button(() -> gamepad2.x)
                 .toggleOnBecomesTrue()
-                .whenTrue(() -> bumper.setPosition(0))
-                .whenFalse(() -> bumper.setPosition(0.5));
+                .whenTrue(Outtake.INSTANCE.moveBumper)
+                .whenFalse(Outtake.INSTANCE.reverseBumper);
     }
 }
