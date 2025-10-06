@@ -39,12 +39,6 @@ public class Teleop extends NextFTCOpMode {
     private MotorEx rightBack = new MotorEx("rightBack").reversed();
     private MotorGroup leftMotors = new MotorGroup(leftFront, leftBack);
     private MotorGroup rightMotors = new MotorGroup(rightFront, rightBack);
-    private ServoEx bumper = new ServoEx("bumper");
-
-    private ServoEx arm =new ServoEx("arm");
-    public Command setArmPos(double pos){
-        return new SetPosition(arm, pos);
-    }
 
     @Override
     public void onStartButtonPressed() {
@@ -88,11 +82,6 @@ public class Teleop extends NextFTCOpMode {
                 .whenTrue(Outtake.INSTANCE.moveBumper)
                 .whenFalse(Outtake.INSTANCE.reverseBumper);
 
-        /*button(() -> gamepad2.a)
-                .whenTrue(new SequentialGroup(
-                        setArmPos(0),
-                        setArmPos(0.2)
-                        ));*/
 
     }
 }
