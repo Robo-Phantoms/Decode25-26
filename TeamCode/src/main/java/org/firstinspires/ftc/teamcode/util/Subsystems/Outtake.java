@@ -24,16 +24,14 @@ public class Outtake implements Subsystem {
     private ServoEx bumper = new ServoEx("bumper");
     public static double kp, ki, kd;
     public static double kv, ka, ks;
+    public static double targetVel = 0;
     private ControlSystem controller = ControlSystem.builder()
             .velPid(kp, ki, kd)
             .basicFF(kv, ka, ks)
             .build();
 
-    //public Command shootArtifact = new RunToVelocity(controller, targetVel).requires(this);
-    //public Command stopShooting = new RunToVelocity(controller, 0).requires(this);
-
-    public Command shootArtifact = new SetPower(flyWheelOuttake, 0.6).requires(flyWheelOuttake);
-    public Command stopShooting = new SetPower(flyWheelOuttake, 0).requires(flyWheelOuttake);
+    public Command shootArtifact = new RunToVelocity(controller, targetVel).requires(this);
+    public Command stopShooting = new RunToVelocity(controller, 0).requires(this);
     public Command moveBumper = new SetPosition(bumper, 0.5).requires(bumper);
     public Command reverseBumper = new SetPosition(bumper, 0).requires(bumper);
 

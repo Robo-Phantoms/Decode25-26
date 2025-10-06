@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
+import dev.nextftc.control.feedback.PIDCoefficients;
+import dev.nextftc.control.feedforward.BasicFeedforward;
+import dev.nextftc.control.feedforward.BasicFeedforwardParameters;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.ftc.Gamepads;
@@ -26,25 +29,25 @@ public class VelocityTest extends NextFTCOpMode {
     private MotorEx flywheelLeft = new MotorEx("flywheelLeft").reversed();
     private MotorEx flywheelRight = new MotorEx("flywheelRight");
 
-    private MotorGroup flywheels = new MotorGroup(flywheelLeft, flywheelRight);
-    public static double kp, ki, kd;
-    public static double kv, ka, ks;
-    public static double targetVel;
-    public static ControlSystem controller = ControlSystem.builder()
-            .velPid(kp, ki, kd)
-            .basicFF(kv, ks, ka)
-            .build();
+    private MotorGroup flywheels = new MotorGroup(flywheelRight, flywheelLeft);
+    public static double kp=0.001, ki=0, kd=0;
+    public static double kv=0.00035, ka=0, ks=0;
+    public static double targetVel=1500;
+    public static PIDCoefficients coefficients = new PIDCoefficients(kp, ki, kd);
+    public static BasicFeedforwardParameters ff = new BasicFeedforwardParameters(kv, ka, ks);
 
-    @Override
-    public void onStartButtonPressed(){
-        Gamepads.gamepad1().a().whenTrue(() -> controller.setGoal(new KineticState(0.0, targetVel, 0.0)));
-    }
+    public static ControlSystem controller = ControlSystem.builder()
+            .velPid(coefficients)
+            .basicFF(ff)
+            .build();
 
     @Override
     public void onUpdate(){
         KineticState currentState = new KineticState(flywheels.getCurrentPosition(), flywheels.getVelocity());
         double power = controller.calculate(currentState);
         flywheels.setPower(power);
+        controller.setGoal(new KineticState(0,targetVel,0));
+
 
         ActiveOpMode.telemetry().addData("currentPos", flywheels.getCurrentPosition());
         ActiveOpMode.telemetry().addData("currentVel", flywheels.getVelocity());

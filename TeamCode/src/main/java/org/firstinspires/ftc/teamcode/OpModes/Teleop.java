@@ -74,9 +74,9 @@ public class Teleop extends NextFTCOpMode {
     }
 
     public void gamepad2(){
-        range(() -> gamepad2.right_stick_y ).inRange(-0.01, 0.01)
+        range(() -> gamepad2.right_stick_y ).inRange(-0.1, 0.1)
                 .whenFalse(() -> Intake.INSTANCE.intakeArtifact(gamepad2.right_stick_y).schedule()  )
-                .whenTrue(() -> Intake.INSTANCE.stopIntake());
+                .whenTrue(() -> Intake.INSTANCE.stopIntake().schedule());
 
         button(() -> gamepad2.b)
                 .toggleOnBecomesTrue()
@@ -88,11 +88,11 @@ public class Teleop extends NextFTCOpMode {
                 .whenTrue(Outtake.INSTANCE.moveBumper)
                 .whenFalse(Outtake.INSTANCE.reverseBumper);
 
-        button(() -> gamepad2.a)
+        /*button(() -> gamepad2.a)
                 .whenTrue(new SequentialGroup(
                         setArmPos(0),
                         setArmPos(0.2)
-                        ));
+                        ));*/
 
     }
 }
