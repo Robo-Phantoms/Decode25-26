@@ -43,8 +43,6 @@ public class Outtake implements Subsystem {
     @Override
     public void periodic(){
         flyWheelOuttake.setPower(controller.calculate(flyWheelOuttake.getState()));
-        ActiveOpMode.telemetry().addData("currentVel", flyWheelOuttake.getVelocity());
-        ActiveOpMode.telemetry().update();
     }
 
 }
