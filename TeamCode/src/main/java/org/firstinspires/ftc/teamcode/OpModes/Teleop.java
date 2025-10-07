@@ -29,7 +29,7 @@ public class Teleop extends NextFTCOpMode {
         addComponents(
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(Outtake.INSTANCE)
+                new SubsystemComponent(Outtake.INSTANCE, Intake.INSTANCE)
         );
     }
 
