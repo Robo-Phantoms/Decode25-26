@@ -25,14 +25,10 @@ public class Outtake implements Subsystem {
     private MotorEx flywheelRight = new MotorEx("flywheelRight");
     private MotorGroup flyWheelOuttake = new MotorGroup(flywheelRight, flywheelLeft);
     private ServoEx bumper = new ServoEx("bumper");
-    public static double kp = 0.001, ki = 0, kd = 0;
-    public static double kv=0.00035, ka=0, ks=0;
     public static double targetVel=1500;
-    public static PIDCoefficients coefficients = new PIDCoefficients(kp, ki, kd);
-    public static BasicFeedforwardParameters ff = new BasicFeedforwardParameters(kv, ka, ks);
     private ControlSystem controller = ControlSystem.builder()
-            .velPid(coefficients)
-            .basicFF(ff)
+            .velPid(0.001, 0 , 0)
+            .basicFF(0.00035, 0, 0)
             .build();
 
     public Command shootArtifact = new RunToVelocity(controller, targetVel).requires(flyWheelOuttake);
