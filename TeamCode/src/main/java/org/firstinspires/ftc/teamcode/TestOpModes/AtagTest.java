@@ -44,6 +44,7 @@ public class AtagTest extends OpMode {
         if (!detections.isEmpty()) {
             for (AprilTagDetection detection : detections) {
                 telemetry.addData("Tag ID", detection.id);
+                telemetry.addData("pose", detection.robotPose);
             }
         } else {
             telemetry.addLine("No tags detected");
