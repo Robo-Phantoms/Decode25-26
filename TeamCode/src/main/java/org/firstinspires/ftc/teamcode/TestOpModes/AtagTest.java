@@ -11,7 +11,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
-@TeleOp(name="AprilTag Test", group="Concept")
+@TeleOp(name="AprilTag Test")
 public class AtagTest extends OpMode {
 
     private AprilTagProcessor aprilTagProcessor;
@@ -20,11 +20,11 @@ public class AtagTest extends OpMode {
 
     @Override
     public void init() {
-        WebcamName webCam = hardwareMap.get(WebcamName.class, "Webcam");
         aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+        aprilTagProcessor.setDecimation(2);
 
         vision = new VisionPortal.Builder()
-                .setCamera(webCam)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .addProcessor(aprilTagProcessor)
                 .enableLiveView(true)
                 .build();
