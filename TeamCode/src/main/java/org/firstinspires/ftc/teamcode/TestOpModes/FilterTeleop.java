@@ -37,7 +37,7 @@ public class FilterTeleop extends NextFTCOpMode {
     public void onStartButtonPressed() {
         gamepad1();
         gamepad2();
-        Filtration.INSTANCE.filter.schedule();
+        Filtration.INSTANCE.filterArtifacts.schedule();
     }
 
     public void gamepad1(){

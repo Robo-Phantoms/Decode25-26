@@ -18,27 +18,36 @@ public class Filtration implements Subsystem {
     private NormalizedColorSensor colorSensor;
     private ServoEx doorGreen = new ServoEx("doorGreen");
     private ServoEx doorPurple = new ServoEx("doorPurple");
-    public static double redValues = 0;
-    public static double blueValues = 0;
-    public static double greenValues = 0;
-    public static double red = 0;
-    public static double blue = 0;
-    public static double green = 0;
     private int ballCount = 0;
     private boolean ballDetected = false;
+    public Command greenArtifact = new ParallelGroup(
+            new SetPosition(doorGreen, 1.0),
+            new SetPosition(doorPurple, 0.0)
+    ).requires(this);
+    public Command purpleArtifact = new ParallelGroup(
+            new SetPosition(doorGreen, 0.0),
+            new SetPosition(doorPurple, 1.0)
+    ).requires(this);
+    public Command filterArtifacts = new LambdaCommand("update-colors")
+                    .setUpdate(() -> {
+                        NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
-    public Command openDoorGreen = new SetPosition(doorGreen, 0.5).requires(doorGreen);
-    public Command openDoorPurple = new SetPosition(doorPurple, 1.0).requires(doorPurple);
-    public Command filter = new ParallelGroup(
-            new LambdaCommand("update-colors")
-                    .setUpdate(this::updateColors)
-                    .setIsDone(() -> false),
-            new IfElseCommand(
-                    this::isPurple,
-                    openDoorPurple,
-                    openDoorGreen
-            )).requires(this);
+                        double red = colors.red;
+                        double green = colors.green;
+                        double blue = colors.blue;
 
+                        double total = red + green + blue;
+                        double redRatio = red / total;
+                        double greenRatio = green / total;
+                        double blueRatio = blue / total;
+
+                        if (isPurple(redRatio, greenRatio, blueRatio)){
+                            purpleArtifact.schedule();
+                        } else if (isGreen(redRatio, greenRatio, blueRatio, total)){
+                            greenArtifact.schedule();
+                        }
+                    })
+                    .setIsDone(() -> false);
 
     @Override
     public void initialize(){
@@ -46,9 +55,18 @@ public class Filtration implements Subsystem {
     }
     @Override
     public void periodic(){
-        updateColors();
+        NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
-        boolean currentDetection = isPurple() || isGreen();
+        double red = colors.red;
+        double green = colors.green;
+        double blue = colors.blue;
+
+        double total = red + green + blue;
+        double redRatio = red / total;
+        double greenRatio = green / total;
+        double blueRatio = blue / total;
+
+        boolean currentDetection = isPurple(redRatio, greenRatio, blueRatio) || isGreen(redRatio, greenRatio, blueRatio, total);
         if(currentDetection && !ballDetected){
             ballCount++;
             ballDetected = true;
@@ -65,18 +83,11 @@ public class Filtration implements Subsystem {
         ActiveOpMode.telemetry().update();
 
     }
-    public void updateColors() {
-        NormalizedRGBA colors = colorSensor.getNormalizedColors();
-        redValues = colors.red;
-        greenValues = colors.green;
-        blueValues = colors.blue;
+    public boolean isPurple(double r, double g, double b){
+        return r > 0.22 && b > 0.42 && g < 0.3;
     }
-    public boolean isPurple() {
-        return redValues > red && blueValues > blue && greenValues < green;
-    }
-
-    public boolean isGreen() {
-        return greenValues > green && greenValues > redValues && greenValues > blueValues;
+    public boolean isGreen(double r, double g, double b, double total){
+        return g > 0.35 && g > r + 0.10 && g > b + 0.05 && total > 0.05;
     }
 
     public int getBallCount(){
