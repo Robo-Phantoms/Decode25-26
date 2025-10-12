@@ -52,6 +52,7 @@ public class Filtration implements Subsystem {
     @Override
     public void initialize(){
         colorSensor = ActiveOpMode.hardwareMap().get(NormalizedColorSensor.class, "colorSensor");
+        colorSensor.setGain(7.0f);
     }
     @Override
     public void periodic(){
