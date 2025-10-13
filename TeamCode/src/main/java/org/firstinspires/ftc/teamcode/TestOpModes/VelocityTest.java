@@ -30,11 +30,11 @@ public class VelocityTest extends NextFTCOpMode {
     private MotorEx flywheelRight = new MotorEx("flywheelRight");
 
     private MotorGroup flywheels = new MotorGroup(flywheelRight, flywheelLeft);
-    public double kp=0.0009, ki=0, kd=0;
-    public double kv=0.00031, ka=0, ks=0;
+    public static double kp=0.0009, ki=0, kd=0;
+    public static double kv=0.00031, ka=0, ks=0;
     public static double targetVel=1500;
-    public PIDCoefficients coefficients = new PIDCoefficients(kp, ki, kd);
-    public BasicFeedforwardParameters ff = new BasicFeedforwardParameters(kv, ka, ks);
+    public static PIDCoefficients coefficients = new PIDCoefficients(kp, ki, kd);
+    public static BasicFeedforwardParameters ff = new BasicFeedforwardParameters(kv, ka, ks);
 
     public ControlSystem controller = ControlSystem.builder()
             .velPid(coefficients)
