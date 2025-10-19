@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.TestOpModes;
 
 import static dev.nextftc.bindings.Bindings.button;
+import static dev.nextftc.bindings.Bindings.range;
 
 import org.firstinspires.ftc.teamcode.util.ExtraCommands.DriveCommands;
+import org.firstinspires.ftc.teamcode.util.Subsystems.Bumper;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Filtration;
+import org.firstinspires.ftc.teamcode.util.Subsystems.Flywheels;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Outtake;
 
@@ -22,7 +25,12 @@ public class FilterTeleop extends NextFTCOpMode {
         addComponents(
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(Outtake.INSTANCE, Intake.INSTANCE, Filtration.INSTANCE)
+                new SubsystemComponent(
+                        Outtake.INSTANCE,
+                        Intake.INSTANCE,
+                        Filtration.INSTANCE,
+                        Flywheels.INSTANCE,
+                        Bumper.INSTANCE)
         );
     }
 
@@ -37,7 +45,6 @@ public class FilterTeleop extends NextFTCOpMode {
     public void onStartButtonPressed() {
         gamepad1();
         gamepad2();
-        Filtration.INSTANCE.filterArtifacts.schedule();
     }
 
     public void gamepad1(){
@@ -62,22 +69,15 @@ public class FilterTeleop extends NextFTCOpMode {
     }
 
     public void gamepad2(){
-        Gamepads.gamepad2().rightStickY().inRange(-0.1, 0.1)
+        range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
                 .whenFalse(() -> Intake.INSTANCE.intakeArtifact(gamepad2.right_stick_y).schedule()  )
                 .whenTrue(() -> Intake.INSTANCE.stopIntake().schedule());
 
         button(() -> gamepad2.b)
                 .toggleOnBecomesTrue()
-                .whenTrue(Outtake.INSTANCE.shootArtifact)
-                .whenFalse(Outtake.INSTANCE.stopShooting);
+                .whenTrue(Flywheels.INSTANCE.shootArtifact)
+                .whenFalse(Flywheels.INSTANCE.stopShooting);
 
-        button(() -> gamepad2.x)
-                .toggleOnBecomesTrue()
-                .whenTrue(Outtake.INSTANCE.moveBumper)
-                .whenFalse(Outtake.INSTANCE.reverseBumper);
-
-
-
-
+        button(() -> gamepad2.x).whenBecomesTrue(Bumper.INSTANCE.moveBumper);
     }
 }

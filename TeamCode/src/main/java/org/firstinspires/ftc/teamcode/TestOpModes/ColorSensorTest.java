@@ -13,13 +13,7 @@ public class ColorSensorTest extends OpMode {
     @Override
     public void init() {
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
-
-        // Slightly increase gain for better dark color detection
-        colorSensor.setGain(7.0f); // a bit higher for darker surfaces
-
-        telemetry.addLine("Initialized REV Color Sensor V3!");
-        telemetry.addLine("Detecting Purple vs Dark Green...");
-        telemetry.update();
+        colorSensor.setGain(7.0f);
     }
 
     @Override

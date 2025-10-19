@@ -29,7 +29,7 @@ public class Teleop extends NextFTCOpMode {
         addComponents(
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(Outtake.INSTANCE, Intake.INSTANCE)
+                new SubsystemComponent(Flywheels.INSTANCE, Intake.INSTANCE, Bumper.INSTANCE)
         );
     }
 
@@ -74,13 +74,11 @@ public class Teleop extends NextFTCOpMode {
 
         button(() -> gamepad2.b)
                 .toggleOnBecomesTrue()
-                .whenBecomesTrue(Outtake.INSTANCE.shootArtifact)
-                .whenBecomesFalse(Outtake.INSTANCE.stopShooting);
+                .whenBecomesTrue(Flywheels.INSTANCE.shootArtifact)
+                .whenBecomesFalse(Flywheels.INSTANCE.stopShooting);
 
-        button(() -> gamepad2.x)
-                .toggleOnBecomesTrue()
-                .whenTrue(Outtake.INSTANCE.moveBumper)
-                .whenFalse(Outtake.INSTANCE.reverseBumper);
+        button(() -> gamepad2.x).whenBecomesTrue(Bumper.INSTANCE.moveBumper);
+
 
 
     }
