@@ -11,8 +11,8 @@ public class Flywheels implements Subsystem {
     public static Flywheels INSTANCE = new Flywheels();
     private Flywheels(){}
 
-    private MotorEx flywheelLeft = new MotorEx("flywheelLeft").reversed();
-    private MotorEx flywheelRight = new MotorEx("flywheelRight");
+    private MotorEx flywheelLeft = new MotorEx("flywheelLeft");
+    private MotorEx flywheelRight = new MotorEx("flywheelRight").reversed();
     private MotorGroup flyWheelOuttake = new MotorGroup(flywheelRight, flywheelLeft);
 
     private ControlSystem controller = ControlSystem.builder()

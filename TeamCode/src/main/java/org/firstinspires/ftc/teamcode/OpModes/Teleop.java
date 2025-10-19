@@ -77,7 +77,10 @@ public class Teleop extends NextFTCOpMode {
                 .whenBecomesTrue(Flywheels.INSTANCE.shootArtifact)
                 .whenBecomesFalse(Flywheels.INSTANCE.stopShooting);
 
-        button(() -> gamepad2.x).whenBecomesTrue(Bumper.INSTANCE.moveBumper);
+        button(() -> gamepad2.x)
+                .toggleOnBecomesTrue()
+                .whenBecomesTrue(Bumper.INSTANCE.moveBumper)
+                .whenBecomesFalse(Bumper.INSTANCE.reverseBumper);
 
 
 
