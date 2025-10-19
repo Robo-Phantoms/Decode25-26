@@ -16,11 +16,11 @@ public class Flywheels implements Subsystem {
     private MotorGroup flyWheelOuttake = new MotorGroup(flywheelRight, flywheelLeft);
 
     private ControlSystem controller = ControlSystem.builder()
-            .velPid(0.0009, 0 , 0)
-            .basicFF(0.00031, 0, 0)
+            .velPid(0.000001, 0 , 0.0001)
+            .basicFF(0.000359, 0, 0)
             .build();
 
-    public Command shootArtifact = new RunToVelocity(controller, 1850).requires(this);
+    public Command shootArtifact = new RunToVelocity(controller, 1500).requires(this);
     public Command stopShooting = new RunToVelocity(controller, 0).requires(this);
 
     @Override

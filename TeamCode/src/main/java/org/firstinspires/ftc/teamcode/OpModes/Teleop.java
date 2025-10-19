@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.util.ExtraCommands.*;
 import org.firstinspires.ftc.teamcode.util.Subsystems.*;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -79,8 +80,11 @@ public class Teleop extends NextFTCOpMode {
 
         button(() -> gamepad2.x)
                 .toggleOnBecomesTrue()
-                .whenBecomesTrue(Bumper.INSTANCE.moveBumper)
-                .whenBecomesFalse(Bumper.INSTANCE.reverseBumper);
+                .whenBecomesTrue(new SequentialGroup(
+                        Bumper.INSTANCE.moveBumper,
+                        new Delay(1.0),
+                        Bumper.INSTANCE.reverseBumper
+                ));
 
 
 

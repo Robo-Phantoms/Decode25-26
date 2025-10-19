@@ -11,7 +11,7 @@ public class Bumper implements Subsystem {
     private Bumper(){}
     private ServoEx bumper = new ServoEx("bumper");
 
-    public Command moveBumper = new SetPosition(bumper, 0.75);
+    public Command moveBumper = new SetPosition(bumper, 0.8);
     public Command reverseBumper = new SetPosition(bumper, 1.0);
 
 
