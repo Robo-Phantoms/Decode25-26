@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.util.Subsystems;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.impl.ServoEx;
@@ -13,6 +14,11 @@ public class Bumper implements Subsystem {
 
     public Command moveBumper = new SetPosition(bumper, 0.8);
     public Command reverseBumper = new SetPosition(bumper, 1.0);
+    public Command moveBumperShoot = new SequentialGroup(
+            Bumper.INSTANCE.moveBumper,
+            new Delay(1.0),
+            Bumper.INSTANCE.reverseBumper
+    );
 
 
 }
