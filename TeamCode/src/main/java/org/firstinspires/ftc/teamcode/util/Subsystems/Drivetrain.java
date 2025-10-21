@@ -29,7 +29,7 @@ public class Drivetrain implements Subsystem {
 
     public Command strafeRight = new LambdaCommand("strafe-right")
             .setStart(() -> {
-                setDtPowers(power, -power, -power, power);
+                setDtPowers(-power, power, power, -power);
             })
             .setStop(interrupted -> {
                 setDtPowers(0, 0, 0, 0);
@@ -37,7 +37,7 @@ public class Drivetrain implements Subsystem {
 
     public Command strafeLeft = new LambdaCommand("strafe-left")
             .setStart(() -> {
-                setDtPowers(-power, power, power, -power);
+                setDtPowers(power, -power, -power, power);
             })
             .setStop(interrupted -> {
                 setDtPowers(0, 0 , 0, 0 );

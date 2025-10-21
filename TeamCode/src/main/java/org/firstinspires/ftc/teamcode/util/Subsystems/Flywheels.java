@@ -20,7 +20,7 @@ public class Flywheels implements Subsystem {
             .basicFF(0.000359, 0, 0)
             .build();
 
-    public Command shootArtifact = new RunToVelocity(controller, 1400).requires(this);
+    public Command startShooting = new RunToVelocity(controller, 1400).requires(this);
     public Command stopShooting = new RunToVelocity(controller, 0).requires(this);
 
     @Override
