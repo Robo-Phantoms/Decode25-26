@@ -48,9 +48,9 @@ public class LauncherTest extends NextFTCOpMode {
     @Override
     public void onUpdate(){
         KineticState currentState = new KineticState(launcherGroup.getLeader().getCurrentPosition(), launcherGroup.getLeader().getVelocity());
+        controller.setGoal(new KineticState(targetPos,0,0));
         double power = controller.calculate(currentState);
         launcherGroup.getLeader().setPower(power);
-        controller.setGoal(new KineticState(targetPos,0,0));
         telemetry.addData("pos:", launcherGroup.getLeader().getCurrentPosition());
         telemetry.addData("target", targetPos);
         telemetry.update();
