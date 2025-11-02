@@ -18,7 +18,7 @@ public class Teleop extends NextFTCOpMode {
         addComponents(
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(Intake.INSTANCE, Drivetrain.INSTANCE, Catapult.INSTANCE)
+                new SubsystemComponent(Intake.INSTANCE, Drivetrain.INSTANCE, Catapults.INSTANCE)
         );
     }
 
@@ -36,9 +36,6 @@ public class Teleop extends NextFTCOpMode {
                 .whenFalse(() -> Intake.INSTANCE.intakeArtifact(gamepad2.right_stick_y).schedule()  )
                 .whenTrue(() -> Intake.INSTANCE.stopIntake().schedule());
 
-        button(() -> gamepad2.b)
-                .toggleOnBecomesTrue()
-                .whenBecomesTrue(Catapult.INSTANCE.catapultsUp)
-                .whenBecomesFalse(Catapult.INSTANCE.catapultsDown);
+        button(() -> gamepad2.b).whenBecomesTrue(Catapults.INSTANCE.shootArtifact);
     }
 }

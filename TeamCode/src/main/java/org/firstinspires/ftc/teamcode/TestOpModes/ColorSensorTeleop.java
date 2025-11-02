@@ -1,69 +1,63 @@
 package org.firstinspires.ftc.teamcode.TestOpModes;
 
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import dev.nextftc.ftc.NextFTCOpMode;
+import dev.nextftc.hardware.impl.FeedbackCRServoEx;
 import dev.nextftc.hardware.impl.ServoEx;
 @TeleOp(name = "ColorSensorTeleop")
 public class ColorSensorTeleop extends NextFTCOpMode {
     private ServoEx servo = new ServoEx("bumper");
     private NormalizedColorSensor colorSensor;
+    private float[] hsv = new float[3];
 
+    public enum Colors{
+        GREEN,
+        PURPLE,
+        NONE
+    }
     @Override
     public void onInit(){
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
         colorSensor.setGain(7.0f);
     }
-    public void onUpdate(){
+    public void onUpdate() {
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
-        double red = colors.red;
-        double green = colors.green;
-        double blue = colors.blue;
-
-        double total = red + green + blue;
-        double redRatio = red / total;
-        double greenRatio = green / total;
-        double blueRatio = blue / total;
-
-        String detectedColor = detectPurpleOrGreen(redRatio, greenRatio, blueRatio, total);
-
-        telemetry.addData("Raw Red", "%.3f", red);
-        telemetry.addData("Raw Green", "%.3f", green);
-        telemetry.addData("Raw Blue", "%.3f", blue);
-        telemetry.addLine("---------------------------");
-        telemetry.addData("Red Ratio", "%.2f", redRatio);
-        telemetry.addData("Green Ratio", "%.2f", greenRatio);
-        telemetry.addData("Blue Ratio", "%.2f", blueRatio);
-        telemetry.addData("Brightness", "%.2f", total);
-        telemetry.addLine("---------------------------");
-        telemetry.addData("Detected Color", detectedColor);
-        telemetry.update();
-
-        if (isPurple(redRatio, greenRatio, blueRatio)){
-            servo.setPosition(0.8);
-        } else if (isGreen(redRatio, greenRatio, blueRatio, total)){
-            servo.setPosition(0);
-        }
-    }
-    public boolean isPurple(double r, double g, double b){
-        return r > 0.22 && b > 0.42 && g < 0.3;
-    }
-    public boolean isGreen(double r, double g, double b, double total){
-        return g > 0.35 && g > r + 0.10 && g > b + 0.05 && total > 0.05;
-    }
-    private String detectPurpleOrGreen(double r, double g, double b, double total) {
-        if (r > 0.22 && b > 0.42 && g < 0.3) {
-            return "Purple";
+        Color.RGBToHSV(
+                (int) (colors.red*255),
+                (int) (colors.green*255),
+                (int) (colors.blue*255),
+                hsv
+        );
+        Colors color = updateHSV();
+        if (color == Colors.PURPLE) {
+            servo.to(0.5);
+            telemetry.addLine("Purple detected");
+        } else if (color == Colors.GREEN) {
+            servo.to(1.0);
+            telemetry.addLine("Green detected");
+        } else {
+            telemetry.addLine("No color detected");
         }
 
-        if (g > 0.35 && g > r + 0.10 && g > b + 0.05 && total > 0.05) {
-            return "Dark Green";
-        }
-
-        return "Unknown";
     }
+
+    public Colors updateHSV(){
+        float hue = hsv[0];
+
+        if (hue >=260 && hue<=300){
+            return Colors.PURPLE;
+        }
+        else if (hue >= 90 && hue <= 150){
+            return Colors.GREEN;
+        }
+        return Colors.NONE;
+    }
+
 }
