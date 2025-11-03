@@ -8,9 +8,9 @@ import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.powerable.SetPower;
 
-public class Catapult implements Subsystem {
-    public static Catapult INSTANCE = new Catapult();
-    private Catapult(){}
+public class Catapults implements Subsystem {
+    public static Catapults INSTANCE = new Catapults();
+    private Catapults(){}
 
     private MotorEx catapult = new MotorEx("launcher").brakeMode();
     private MotorEx catapult_2 = new MotorEx("launcher2").reversed().brakeMode();

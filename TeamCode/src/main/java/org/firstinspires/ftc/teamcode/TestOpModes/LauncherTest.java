@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
@@ -43,7 +44,7 @@ public class LauncherTest extends NextFTCOpMode {
     @Override
     public void onInit(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        launcher.zeroed();
+        launcher.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     @Override
     public void onUpdate(){
