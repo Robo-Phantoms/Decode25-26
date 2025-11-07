@@ -21,7 +21,6 @@ public class Teleop extends NextFTCOpMode {
                 new SubsystemComponent(Intake.INSTANCE, Drivetrain.INSTANCE, Catapults.INSTANCE)
         );
     }
-
     @Override
     public void onStartButtonPressed() {
         //--- Gamepad1 Commands ---
