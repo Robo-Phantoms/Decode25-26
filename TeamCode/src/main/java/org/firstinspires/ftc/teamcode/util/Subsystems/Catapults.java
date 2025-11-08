@@ -23,13 +23,7 @@ public class Catapults implements Subsystem {
     );
 
     public Command catapultsUp = new SetPower(catapults, 1.0).requires(this);
-    public Command catapultsDown = new SetPower(catapults, -1.0).requires(this);
+    public Command catapultsDown = new SetPower(catapults, -0.67).requires(this);
     public Command Stop = new SetPower(catapults, 0.0).requires(this);
     public Command shootArtifact = new SequentialGroup(catapultsUp, new Delay(1.0), catapultsDown);
-
-    @NonNull
-    @Override
-    public Command getDefaultCommand() {
-        return catapultsDown;
-    }
 }
