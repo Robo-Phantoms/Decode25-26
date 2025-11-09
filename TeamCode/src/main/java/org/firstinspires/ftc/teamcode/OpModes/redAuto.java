@@ -13,7 +13,7 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "testAuto")
+@Autonomous(name = "redAuto")
 public class redAuto extends NextFTCOpMode {
     public redAuto(){
         addComponents(

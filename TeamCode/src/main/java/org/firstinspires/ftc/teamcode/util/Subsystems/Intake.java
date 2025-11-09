@@ -10,11 +10,11 @@ public class Intake implements Subsystem {
     private Intake() {}
     private MotorEx rightIntake = new MotorEx("Intake");
 
-    public Command intakeArtifact(float power){
+    public Command intakeArtifactTele(float power){
         return new SetPower(rightIntake, power);
     }
-    public Command intakeArtifact(double power){
-        return new SetPower(rightIntake, power);
+    public Command intakeArtifactAuto(){
+        return new SetPower(rightIntake, -1.0);
     }
     public Command stopIntake(){
         return new SetPower(rightIntake, 0.0);
