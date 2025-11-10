@@ -34,7 +34,7 @@ public class blueAutoNicer extends NextFTCOpMode {
 
     MecanumDrive drive;
     Command firstCycle, firstLineStart, firstLineIntake, secondCycle, secondLineStart, secondLineIntake,thirdLineIntake,thirdCycle, thirdLineStart,fourthCycle;
-    
+
     @Override
     public void onInit(){
         drive = new MecanumDrive(hardwareMap, startPose);
@@ -43,7 +43,7 @@ public class blueAutoNicer extends NextFTCOpMode {
                 .build();
 
         firstLineStart = drive.commandBuilder(scorePose).fresh()
-                .splineToLinearHeading(new Pose2d(firstLineStartPose.position, firstLineStartPose.heading), firstLineStartPose.heading)
+                .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
                 .build();
 
         firstLineIntake = drive.commandBuilder(firstLineStartPose).fresh()
@@ -51,11 +51,11 @@ public class blueAutoNicer extends NextFTCOpMode {
                 .build();
 
         secondCycle = drive.commandBuilder(secondCycleStartPose).fresh()
-                .splineToLinearHeading(new Pose2d(scorePoseV2.position, scorePoseV2.heading), scorePoseV2.heading)
+                .splineToLinearHeading(scorePoseV2, scorePoseV2.heading)
                 .build();
 
         secondLineStart = drive.commandBuilder(scorePoseV2).fresh()
-                .splineToLinearHeading(new Pose2d(secondLineStartPose.position, secondLineStartPose.heading), secondLineStartPose.heading)
+                .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
                 .build();
 
         secondLineIntake = drive.commandBuilder(secondLineStartPose)
@@ -63,11 +63,11 @@ public class blueAutoNicer extends NextFTCOpMode {
                 .build();
 
         thirdCycle = drive.commandBuilder(thirdCycleStartPose).fresh()
-                .splineToLinearHeading(new Pose2d(scorePoseV2.position, scorePoseV2.heading), scorePoseV2.heading)
+                .splineToLinearHeading(scorePoseV2, scorePoseV2.heading)
                 .build();
 
         thirdLineStart = drive.commandBuilder(scorePoseV2).fresh()
-                .splineToLinearHeading(new Pose2d(thirdLineStartPose.position, thirdLineStartPose.heading), thirdLineStartPose.heading)
+                .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
                 .build();
 
         thirdLineIntake = drive.commandBuilder(thirdLineStartPose).fresh()
@@ -75,7 +75,7 @@ public class blueAutoNicer extends NextFTCOpMode {
                 .build();
 
         fourthCycle =drive.commandBuilder(fourthCycleStartPose).fresh()
-                .splineToLinearHeading(new Pose2d(scorePoseV2.position, scorePoseV2.heading), scorePoseV2.heading)
+                .splineToLinearHeading(scorePoseV2, scorePoseV2.heading)
                 .build();
     }
 
