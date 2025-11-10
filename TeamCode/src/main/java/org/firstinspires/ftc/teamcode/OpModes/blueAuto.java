@@ -73,19 +73,25 @@ public class blueAuto extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed(){
         new SequentialGroup(
-                Intake.INSTANCE.intakeArtifactAuto(),
+                Catapults.INSTANCE.catapultsDown,
                 firstCycle,
                 Catapults.INSTANCE.shootArtifact,
+                Intake.INSTANCE.intakeArtifactAuto(),
                 firstLineStart,
                 firstLineIntake,
+                Intake.INSTANCE.stopIntake(),
                 secondCycle,
                 Catapults.INSTANCE.shootArtifact,
+                Intake.INSTANCE.intakeArtifactAuto(),
                 secondLineStart,
                 secondLineIntake,
+                Intake.INSTANCE.stopIntake(),
                 thirdLineCycle,
                 Catapults.INSTANCE.shootArtifact,
+                Intake.INSTANCE.intakeArtifactAuto(),
                 thirdLineStart,
                 thirdLineIntake,
+                Intake.INSTANCE.stopIntake(),
                 fourthCycle,
                 Catapults.INSTANCE.shootArtifact
         ).schedule();

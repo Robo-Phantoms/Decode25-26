@@ -21,7 +21,7 @@ public class Drivetrain implements Subsystem {
     private MotorGroup leftMotors = new MotorGroup(leftFront, leftBack);
     private MotorGroup rightMotors = new MotorGroup(rightFront, rightBack);
 
-    public double power = 0.55;
+    public double power = 0.8;
 
     public DriverControlledCommand startDrive = new DifferentialTankDriverControlled(
             leftMotors, rightMotors, Gamepads.gamepad1().leftStickY(), Gamepads.gamepad1().rightStickY()
