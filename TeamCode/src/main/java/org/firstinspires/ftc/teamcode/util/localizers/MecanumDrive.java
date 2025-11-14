@@ -68,14 +68,14 @@ public final class MecanumDrive extends NextFTCMecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP;
 
         // drive model parameters
-        public double inPerTick = 0.0020322191409640339549948136074;
-        public double lateralInPerTick = 0.001462143699290083;
-        public double trackWidthTicks = 7035.766648761856;
+        public double inPerTick = 0.00201778170124219685982722744183;
+        public double lateralInPerTick = 0.0013971572246798643;
+        public double trackWidthTicks = 7520.456054909184;
 
         // feedforward parameters (in tick units)
-        public double kS = 1.0601411216188987;
-        public double kV = 0.00027391301843933814;
-        public double kA = 0.0001;
+        public double kS =1.2515434938329393;
+        public double kV = 0.0002618375787720017;
+        public double kA = 0.00001;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -87,9 +87,9 @@ public final class MecanumDrive extends NextFTCMecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 1.7;
-        public double lateralGain = 0.75;
-        public double headingGain = 0.75; // shared with turn
+        public double axialGain = 3;
+        public double lateralGain = 4;
+        public double headingGain = 7; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;

@@ -6,6 +6,8 @@ import static dev.nextftc.bindings.Bindings.range;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.util.Subsystems.*;
 
+import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
@@ -32,15 +34,12 @@ public class Teleop extends NextFTCOpMode {
 
         // --- Gamepad2 Commands ---
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
-                .whenFalse(() -> Intake.INSTANCE.intakeArtifactTele(gamepad2.right_stick_y).schedule()  )
+                .whenFalse(() -> Intake.INSTANCE.intakeArtifactTele(gamepad2.right_stick_y).schedule())
                 .whenTrue(() -> Intake.INSTANCE.stopIntake().schedule());
 
-        button(() -> gamepad2.right_bumper).whenBecomesTrue(Catapults.INSTANCE.shootArtifact);
-        button(() -> gamepad2.x).whenBecomesTrue(Catapults.INSTANCE.catapultsDown.endAfter(0.3));
-
-        button(() -> gamepad2.y)
+        button(() -> gamepad2.right_bumper)
                 .toggleOnBecomesTrue()
-                .whenBecomesTrue(Catapults.INSTANCE.catapultsUp)
-                .whenBecomesFalse(Catapults.INSTANCE.catapultsDown);
+                .whenBecomesTrue(Catapults.INSTANCE.catapultsDown)
+                .whenBecomesFalse(Catapults.INSTANCE.catapultsUp);
     }
 }
