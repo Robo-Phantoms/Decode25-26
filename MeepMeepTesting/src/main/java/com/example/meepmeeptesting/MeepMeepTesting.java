@@ -9,10 +9,8 @@ public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
-        final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
-        final Pose2d scorePose = new Pose2d(-40, -35,Math.toRadians(230));
-        final Pose2d firstLineStartPose = new Pose2d(-12, -35, Math.toRadians(270));
-        final Pose2d firstLineIntakePose = new Pose2d(-12, -45, Math.toRadians(270));
+        final Pose2d startPose = new Pose2d(-51,48, Math.toRadians(127));
+        final Pose2d scorePose = new Pose2d(-40, 35,Math.toRadians(130));
 
 
 
@@ -21,10 +19,7 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(startPose.position, startPose.heading))
-                .strafeToLinearHeading(scorePose.position, scorePose.heading)
-                .splineToLinearHeading(new Pose2d(firstLineStartPose.position, firstLineStartPose.heading), firstLineStartPose.heading)
-                .lineToYLinearHeading(-45, Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(scorePose.position, scorePose.heading), scorePose.heading)
+                .splineToLinearHeading(scorePose, scorePose.heading)
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)

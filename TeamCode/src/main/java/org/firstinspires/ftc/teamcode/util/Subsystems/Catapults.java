@@ -25,5 +25,5 @@ public class Catapults implements Subsystem {
     public Command catapultsUp = new SetPower(catapults, 1.0).requires(this).named("Catapult Up");
     public Command catapultsDown = new SetPower(catapults, -1.0).requires(this).named("Catapult Down");
     public Command Stop = new SetPower(catapults, 0.0).requires(this).named("Catapult Stop");
-    public Command shootArtifact = new SequentialGroup(catapultsUp, new Delay(0.2), catapultsDown, new Delay(0.2), Stop);
+    public Command shootArtifact = new SequentialGroup(catapultsUp, new Delay(0.2), catapultsDown);
 }
