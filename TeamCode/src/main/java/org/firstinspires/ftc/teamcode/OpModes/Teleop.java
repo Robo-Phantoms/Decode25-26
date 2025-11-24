@@ -40,6 +40,9 @@ public class Teleop extends NextFTCOpMode {
         button(() -> gamepad2.right_bumper)
                 .toggleOnBecomesTrue()
                 .whenBecomesTrue(Catapults.INSTANCE.catapultsDown)
-                .whenBecomesFalse(Catapults.INSTANCE.catapultsUp);
+                .whenBecomesFalse(new SequentialGroup(Catapults.INSTANCE.catapultsUp, new Delay(0.5), Catapults.INSTANCE.Stop
+                ));
+
+        button(() -> gamepad2.left_bumper).whenBecomesTrue(Catapults.INSTANCE.steadyArtifacts);
     }
 }

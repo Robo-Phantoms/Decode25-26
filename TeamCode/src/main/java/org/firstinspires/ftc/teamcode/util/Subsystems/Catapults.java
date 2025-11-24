@@ -10,6 +10,7 @@ import dev.nextftc.hardware.controllable.Controllable;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.impl.VoltageCompensatingMotor;
+import dev.nextftc.hardware.positionable.SetPosition;
 import dev.nextftc.hardware.powerable.SetPower;
 
 public class Catapults implements Subsystem {
@@ -26,4 +27,5 @@ public class Catapults implements Subsystem {
     public Command catapultsDown = new SetPower(catapults, -1.0).requires(this).named("Catapult Down");
     public Command Stop = new SetPower(catapults, 0.0).requires(this).named("Catapult Stop");
     public Command shootArtifact = new SequentialGroup(catapultsUp, new Delay(0.2), catapultsDown);
+    public Command steadyArtifacts = new SequentialGroup(catapultsUp, new Delay(0.02), catapultsDown);
 }
