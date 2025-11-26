@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes;
 
 import static dev.nextftc.bindings.Bindings.button;
 import static dev.nextftc.bindings.Bindings.range;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.util.Subsystems.*;
 

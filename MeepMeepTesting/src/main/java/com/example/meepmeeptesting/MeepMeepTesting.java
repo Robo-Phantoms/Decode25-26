@@ -8,10 +8,12 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-
-        final Pose2d startPose = new Pose2d(-51,48, Math.toRadians(127));
-        final Pose2d scorePose = new Pose2d(-40, 35,Math.toRadians(130));
-
+        final Pose2d startPose = new Pose2d(-51, -48, Math.toRadians(230));
+        final Pose2d scorePose = new Pose2d(-39.1, -33.5, Math.toRadians(233));
+        final Pose2d firstLineStartPose = new Pose2d(-8, -22, Math.toRadians(270));
+        final Pose2d secondLineStartPose = new Pose2d(16, -22, Math.toRadians(270));
+        final Pose2d thirdLineStartPose = new Pose2d(41, -22, Math.toRadians(270));
+        final Pose2d squareIntakePose = new Pose2d(61, -44, Math.toRadians(270));
 
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
@@ -19,6 +21,20 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(startPose.position, startPose.heading))
+                .strafeToLinearHeading(scorePose.position, scorePose.heading)
+                .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
+                .lineToY(-44)
+                //2nd cycle
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
+                .lineToY(-44)
+                //third cycle
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
+                .lineToY(-44)
+                //4th cycle
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .splineToLinearHeading(squareIntakePose, squareIntakePose.heading)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build());
 
