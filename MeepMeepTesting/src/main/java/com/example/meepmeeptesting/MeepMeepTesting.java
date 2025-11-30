@@ -21,20 +21,30 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(startPose.position, startPose.heading))
+                        .setTangent(230)
                 .strafeToLinearHeading(scorePose.position, scorePose.heading)
+                        .setTangent(270)
                 .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
                 .lineToY(-44)
                 //2nd cycle
+                        .setTangent(230)
                 .splineToLinearHeading(scorePose, scorePose.heading)
+                        .setTangent(270)
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
                 .lineToY(-44)
                 //third cycle
+                .setTangent(230)
                 .splineToLinearHeading(scorePose, scorePose.heading)
+                        .setTangent(270)
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
                 .lineToY(-44)
                 //4th cycle
+                .setTangent(230)
                 .splineToLinearHeading(scorePose, scorePose.heading)
+                        .setTangent(270)
                 .splineToLinearHeading(squareIntakePose, squareIntakePose.heading)
+                //5th cycle
+                        .setTangent(230)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build());
 
