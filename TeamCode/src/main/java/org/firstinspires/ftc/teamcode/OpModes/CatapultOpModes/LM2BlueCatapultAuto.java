@@ -27,6 +27,7 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
     private final Pose2d secondLineStartPose = new Pose2d(16, -22, Math.toRadians(270));
     private final Pose2d thirdLineStartPose = new Pose2d(41, -22, Math.toRadians(270));
     private final Pose2d squareIntakePose = new Pose2d(61, -44, Math.toRadians(270));
+    public static Pose2d autonEndPose;
 
     public Command Auto;
     public MecanumDrive drive;
@@ -62,5 +63,11 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .stopAndAdd(new SequentialGroup(new ParallelGroup(Catapults.INSTANCE.steadyArtifacts, Intake.INSTANCE.intakeArtifactAuto()), Catapults.INSTANCE.shootArtifact))
                 .build();
+    }
+
+    @Override
+    public void onStop(){
+        drive.updatePoseEstimate();
+        autonEndPose = drive.getPose();
     }
 }

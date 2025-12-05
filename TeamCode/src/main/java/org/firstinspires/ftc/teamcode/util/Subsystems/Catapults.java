@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.util.Subsystems;
 
 import androidx.annotation.NonNull;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.control.feedforward.GravityFeedforwardParameters;
@@ -19,12 +22,18 @@ import dev.nextftc.hardware.powerable.SetPower;
 public class Catapults implements Subsystem {
     public static Catapults INSTANCE = new Catapults();
     private Catapults(){}
+    private MotorEx catapultRight = new MotorEx("launcher");
+    private MotorEx catapultLeft = new MotorEx("launcher2");
     private Controllable catapults = new VoltageCompensatingMotor(
-            new MotorGroup(
-                    new MotorEx("launcher").brakeMode().zeroed(),
-                    new MotorEx("launcher2").reversed().brakeMode().zeroed()
-            )
+            new MotorGroup(catapultRight, catapultLeft)
     );
+
+    @Override
+    public void initialize(){
+        catapultRight.getMotor().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        catapultLeft.getMotor().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        catapultLeft.getMotor().setDirection(DcMotorSimple.Direction.REVERSE);
+    }
 
     //public static PIDCoefficients coefficients = new PIDCoefficients(0,0,0);
     //public static GravityFeedforwardParameters ff = new GravityFeedforwardParameters(0,0,0,0);

@@ -1,15 +1,19 @@
 package org.firstinspires.ftc.teamcode.util.Subsystems;
 
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Rotation2d;
+import com.acmerobotics.roadrunner.TimeTurn;
 import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.teamcode.util.localizers.MecanumDrive;
 import org.jetbrains.annotations.NotNull;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.core.units.Angle;
+import dev.nextftc.extensions.roadrunner.Turn;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.driving.DifferentialTankDriverControlled;
@@ -64,23 +68,14 @@ public class Drivetrain implements Subsystem {
                 setDtPowers(0, 0, 0, 0);
             }).requires(this);
 
-    public Command turnTo(MecanumDrive drive, double kp, double target){
-        return new LambdaCommand("Turn-to")
-                .setUpdate(() -> {
-                    double currentHeading = drive.getPose().heading.toDouble();
-                    double error = target - currentHeading;
-                    error = Angle.fromRad(error).normalized().inRad;
-                    drive.setDrivePowers(new PoseVelocity2d(
-                            new Vector2d(0,0),
-                            kp * error
-                    ));
-                })
-                .setIsDone(() -> {
-                    double currentHeading = drive.getPose().heading.toDouble();
-                    double error = target - currentHeading;
-                    error = Angle.fromRad(error).normalized().inRad;
-                    return Math.abs(error) < Math.toRadians(1.0);
-                }).requires(this);
+    public InstantCommand turnTo(MecanumDrive drive, Rotation2d angleToTurnTo){
+        return new InstantCommand("Turn-to" + angleToTurnTo, () -> {
+            Rotation2d heading = drive.getPose().heading;
+            new Turn(
+                    drive,
+                    new TimeTurn(drive.getPose(), angleToTurnTo.minus(heading), drive.defaultTurnConstraints)
+            ).requires(this).schedule();
+        });
     }
 
     public void setDtPowers(double lfPower, double rfPower, double lbPower, double rbPower){
