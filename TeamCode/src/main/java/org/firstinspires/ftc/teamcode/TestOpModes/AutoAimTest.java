@@ -2,15 +2,10 @@ package org.firstinspires.ftc.teamcode.TestOpModes;
 
 import static dev.nextftc.bindings.Bindings.button;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Rotation2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.util.Subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.util.Subsystems.Limelight;
 import org.firstinspires.ftc.teamcode.util.localizers.MecanumDrive;
 
 import dev.nextftc.core.components.BindingsComponent;
@@ -18,7 +13,7 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Config
+
 @TeleOp(name = "AutoAimTest")
 public class AutoAimTest extends NextFTCOpMode {
     public AutoAimTest(){
@@ -29,25 +24,17 @@ public class AutoAimTest extends NextFTCOpMode {
         );
     }
     MecanumDrive drive;
-    private final Pose2d startPose = new Pose2d(0,0, Math.toRadians(270));
+    private final Pose2d startPose = new Pose2d(0,0,Math.toRadians(270));
     private final Pose2d goalHeading = new Pose2d(0,0,Math.toRadians(230));
+
+
     @Override
     public void onInit(){
         drive = new MecanumDrive(hardwareMap, startPose);
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
     @Override
     public void onStartButtonPressed(){
-        button(() -> gamepad1.y).whenBecomesTrue(Drivetrain.INSTANCE.turnTo(drive, goalHeading.heading));
-    }
-
-    @Override
-    public void onUpdate(){
-        drive.updatePoseEstimate();
-        telemetry.addData("X", drive.getPose().position.x);
-        telemetry.addData("Y", drive.getPose().position.y);
-        telemetry.addData("Heading", Math.toRadians(drive.getPose().heading.toDouble()));
-        telemetry.update();
+        //button(() -> gamepad1.y).whenBecomesTrue(Drivetrain.INSTANCE.turnTo(drive, goalHeading.heading));
     }
 }

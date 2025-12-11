@@ -1,18 +1,21 @@
 package org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.localizers.MecanumDrive;
 
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
+
+@Autonomous(name = "LM2BlueAuto")
 public class LM2BlueCatapultAuto extends NextFTCOpMode {
     public LM2BlueCatapultAuto(){
         addComponents(
@@ -21,53 +24,85 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
         );
     }
 
-    private final Pose2d startPose = new Pose2d(-51, -48, Math.toRadians(230));
-    private final Pose2d scorePose = new Pose2d(-39.1, -33.5, Math.toRadians(233));
+    private final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
+    private final Pose2d scorePose = new Pose2d(-38, -34.5, Math.toRadians(233));
     private final Pose2d firstLineStartPose = new Pose2d(-8, -22, Math.toRadians(270));
-    private final Pose2d secondLineStartPose = new Pose2d(16, -22, Math.toRadians(270));
-    private final Pose2d thirdLineStartPose = new Pose2d(41, -22, Math.toRadians(270));
-    private final Pose2d squareIntakePose = new Pose2d(61, -44, Math.toRadians(270));
-    public static Pose2d autonEndPose;
+    private final Pose2d secondLineStartPose = new Pose2d(18, -22, Math.toRadians(270));
+    private final Pose2d thirdLineStartPose = new Pose2d(43, -22, Math.toRadians(270));
+    private final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(230));
 
-    public Command Auto;
-    public MecanumDrive drive;
-
+    MecanumDrive drive;
+    Command firstCycle, firstLineStart, firstLineIntake, secondCycle, secondLineStart, secondLineIntake,thirdLineIntake, thirdCycle, thirdLineStart,fourthCycle, leave;
     @Override
     public void onInit(){
         drive = new MecanumDrive(hardwareMap, startPose);
-        Catapults.INSTANCE.catapultsDown.schedule();
-
-        Auto = drive.commandBuilder()
-                //1st cycle
+        firstCycle = drive.commandBuilder(startPose)
                 .strafeToLinearHeading(scorePose.position, scorePose.heading)
-                .stopAndAdd(Catapults.INSTANCE.shootArtifact.and(Intake.INSTANCE.intakeArtifactAuto()))
-                .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
-                .lineToY(-44)
-                .stopAndAdd(Intake.INSTANCE.stopIntake())
-                //2nd cycle
-                .splineToLinearHeading(scorePose, scorePose.heading)
-                .stopAndAdd(new SequentialGroup(new ParallelGroup(Catapults.INSTANCE.steadyArtifacts, Intake.INSTANCE.intakeArtifactAuto()), Catapults.INSTANCE.shootArtifact))
-                .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
-                .lineToY(-44)
-                .stopAndAdd(Intake.INSTANCE.stopIntake())
-                //third cycle
-                .splineToLinearHeading(scorePose, scorePose.heading)
-                .stopAndAdd(new SequentialGroup(new ParallelGroup(Catapults.INSTANCE.steadyArtifacts, Intake.INSTANCE.intakeArtifactAuto()), Catapults.INSTANCE.shootArtifact))
-                .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
-                .lineToY(-44)
-                .stopAndAdd(Intake.INSTANCE.stopIntake())
-                //4th cycle
-                .splineToLinearHeading(scorePose, scorePose.heading)
-                .stopAndAdd(new SequentialGroup(new ParallelGroup(Catapults.INSTANCE.steadyArtifacts, Intake.INSTANCE.intakeArtifactAuto()), Catapults.INSTANCE.shootArtifact))
-                .splineToLinearHeading(squareIntakePose, squareIntakePose.heading)
-                .splineToLinearHeading(scorePose, scorePose.heading)
-                .stopAndAdd(new SequentialGroup(new ParallelGroup(Catapults.INSTANCE.steadyArtifacts, Intake.INSTANCE.intakeArtifactAuto()), Catapults.INSTANCE.shootArtifact))
                 .build();
+
+        firstLineStart = drive.commandBuilder(scorePose).fresh()
+                .splineToLinearHeading(new Pose2d(firstLineStartPose.position, firstLineStartPose.heading), firstLineStartPose.heading)
+                .build();
+
+        firstLineIntake = drive.commandBuilder(firstLineStartPose).fresh()
+                .lineToY(-44)
+                .build();
+
+        secondCycle = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, -44, Math.toRadians(270)))
+                .setReversed(true)
+                .splineToLinearHeading(scorePose,scorePose.heading)
+                .build();
+        secondLineStart = drive.commandBuilder(scorePose)
+                .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
+                .build();
+        secondLineIntake = drive.commandBuilder(secondLineStartPose)
+                .lineToY(-44)
+                .build();
+        thirdCycle = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, -44, Math.toRadians(270)))
+                .setReversed(true)
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .build();
+        thirdLineStart = drive.commandBuilder(scorePose)
+                .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
+                .build();
+        thirdLineIntake = drive.commandBuilder(thirdLineStartPose)
+                .lineToY(-46)
+                .build();
+        fourthCycle = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, -46, Math.toRadians(270)))
+                .setReversed(true)
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .build();
+
+        leave = drive.commandBuilder(scorePose)
+                .strafeToLinearHeading(leavePose.position, leavePose.heading)
+                .build();
+
     }
 
     @Override
-    public void onStop(){
-        drive.updatePoseEstimate();
-        autonEndPose = drive.getPose();
+    public void onStartButtonPressed(){
+        new SequentialGroup(
+                Catapults.INSTANCE.catapultsDown,
+                firstCycle,
+                Catapults.INSTANCE.shootArtifact,
+                Intake.INSTANCE.intakeArtifactAuto(),
+                firstLineStart,
+                Intake.INSTANCE.intakeArtifactAuto(),
+                firstLineIntake,
+                secondCycle,
+                Catapults.INSTANCE.shootArtifact,
+                Intake.INSTANCE.intakeArtifactAuto(),
+                secondLineStart,
+                secondLineIntake,
+                thirdCycle,
+                Catapults.INSTANCE.shootArtifact,
+                Intake.INSTANCE.intakeArtifactAuto(),
+                thirdLineStart,
+                thirdLineIntake,
+                Intake.INSTANCE.intakeArtifactAuto(),
+                fourthCycle,
+                Catapults.INSTANCE.shootArtifact
+        ).schedule();
+
     }
 }

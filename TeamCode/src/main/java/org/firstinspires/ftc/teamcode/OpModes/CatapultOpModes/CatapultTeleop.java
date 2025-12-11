@@ -17,6 +17,7 @@ import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
+import dev.nextftc.hardware.impl.ServoEx;
 
 @Config
 @TeleOp(name="CatapultTeleop")
@@ -26,7 +27,7 @@ public class CatapultTeleop extends NextFTCOpMode {
         addComponents(
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(Intake.INSTANCE, Drivetrain.INSTANCE, Catapults.INSTANCE)
+                new SubsystemComponent(Intake.INSTANCE, Drivetrain.INSTANCE, Catapults.INSTANCE, Steadier.INSTANCE)
         );
     }
 
@@ -37,6 +38,7 @@ public class CatapultTeleop extends NextFTCOpMode {
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
         button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.forward);
         button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.backward);
+        button(() -> gamepad1.x).whenBecomesTrue(Steadier.INSTANCE.steadyArtifacts);
 
         // --- Gamepad2 Commands ---
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
@@ -46,7 +48,5 @@ public class CatapultTeleop extends NextFTCOpMode {
         button(() -> gamepad2.right_bumper).toggleOnBecomesTrue()
                 .whenBecomesTrue(Catapults.INSTANCE.catapultsDown)
                 .whenBecomesFalse(Catapults.INSTANCE.voltageCompensatingCatapultsUp);
-
-        button(() -> gamepad2.left_bumper).whenBecomesTrue(Catapults.INSTANCE.steadyArtifacts);
     }
 }

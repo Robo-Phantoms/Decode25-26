@@ -14,6 +14,7 @@ import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.core.units.Angle;
 import dev.nextftc.extensions.roadrunner.Turn;
+import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.driving.DifferentialTankDriverControlled;
@@ -68,7 +69,7 @@ public class Drivetrain implements Subsystem {
                 setDtPowers(0, 0, 0, 0);
             }).requires(this);
 
-    public InstantCommand turnTo(MecanumDrive drive, Rotation2d angleToTurnTo){
+    /*public InstantCommand turnTo(MecanumDrive drive, Rotation2d angleToTurnTo){
         return new InstantCommand("Turn-to" + angleToTurnTo, () -> {
             Rotation2d heading = drive.getPose().heading;
             new Turn(
@@ -76,7 +77,7 @@ public class Drivetrain implements Subsystem {
                     new TimeTurn(drive.getPose(), angleToTurnTo.minus(heading), drive.defaultTurnConstraints)
             ).requires(this).schedule();
         });
-    }
+    }*/
 
     public void setDtPowers(double lfPower, double rfPower, double lbPower, double rbPower){
         leftFront.setPower(lfPower);

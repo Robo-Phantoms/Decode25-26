@@ -35,28 +35,9 @@ public class Catapults implements Subsystem {
         catapultLeft.getMotor().setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    //public static PIDCoefficients coefficients = new PIDCoefficients(0,0,0);
-    //public static GravityFeedforwardParameters ff = new GravityFeedforwardParameters(0,0,0,0);
-    //double catapultsDownPos = 0;
-    //public ControlSystem controlSystem = ControlSystem.builder()
-      //      .posPid(coefficients)
-        //    .armFF(ff)
-          //  .build();
-
     public Command catapultsUp = new SetPower(catapults, 1.0).requires(this).named("Catapult Up");
     public Command catapultsDown = new SetPower(catapults, -1.0).requires(this).named("Catapult Down");
     public Command Stop = new SetPower(catapults, 0.0).requires(this).named("Catapult Stop");
     public Command shootArtifact = new SequentialGroup(catapultsUp, new Delay(0.2), catapultsDown);
-    public Command steadyArtifacts = new SequentialGroup(catapultsUp, new Delay(0.02), catapultsDown);
     public Command voltageCompensatingCatapultsUp = new SequentialGroup(catapultsUp, new Delay(0.5), Stop);
-    //public Command voltageCompensatingCatapultsDown = new RunToPosition(controlSystem, catapultsDownPos).requires(this);
-
-
-
-    //@Override
-    //public void periodic(){
-      //  catapults.setPower(controlSystem.calculate(catapults.getState()));
-    //}
-
-
 }

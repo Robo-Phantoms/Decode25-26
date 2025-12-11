@@ -30,32 +30,23 @@ public class AutoAimTestLL extends NextFTCOpMode {
         );
     }
     MecanumDrive drive;
-    private final Pose2d startPose = LM2BlueCatapultAuto.autonEndPose;
+    //private final Pose2d startPose = LM2BlueCatapultAuto.autonEndPose;
     private final Pose2d goalHeading = new Pose2d(0,0,Math.toRadians(230));
 
     @Override
     public void onInit(){
-        drive = new MecanumDrive(hardwareMap, startPose);
+        //drive = new MecanumDrive(hardwareMap, startPose);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
     @Override
-    public void onStartButtonPressed(){
+    public void onStartButtonPressed() {
         button(() -> gamepad1.y).whenBecomesTrue(() -> {
             Pose2d llPose = Limelight.INSTANCE.getLLPose();
             if (llPose != null) {
                 drive.localizer.setPose(llPose);
-                Drivetrain.INSTANCE.turnTo(drive, goalHeading.heading).schedule();
+               // Drivetrain.INSTANCE.turnTo(drive, goalHeading.heading).schedule();
             }
         });
-    }
-
-    @Override
-    public void onUpdate(){
-        drive.updatePoseEstimate();
-        telemetry.addData("X", drive.getPose().position.x);
-        telemetry.addData("Y", drive.getPose().position.y);
-        telemetry.addData("Heading", Math.toRadians(drive.getPose().heading.toDouble()));
-        telemetry.update();
     }
 }

@@ -16,6 +16,7 @@ public class Teleop extends OpMode {
     @Override
     public void init(){
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.start();
         telemetry.setMsTransmissionInterval(11);
         limelight.pipelineSwitch(0);
     }
