@@ -38,7 +38,6 @@ public class CatapultTeleop extends NextFTCOpMode {
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
         button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.forward);
         button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.backward);
-        button(() -> gamepad1.x).whenBecomesTrue(Steadier.INSTANCE.steadyArtifacts);
 
         // --- Gamepad2 Commands ---
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
