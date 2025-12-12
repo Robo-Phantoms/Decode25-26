@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.localizers.MecanumDrive;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
@@ -25,10 +26,10 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
     }
 
     private final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
-    private final Pose2d scorePose = new Pose2d(-38, -34.5, Math.toRadians(233));
-    private final Pose2d firstLineStartPose = new Pose2d(-8, -22, Math.toRadians(270));
-    private final Pose2d secondLineStartPose = new Pose2d(18, -22, Math.toRadians(270));
-    private final Pose2d thirdLineStartPose = new Pose2d(43, -22, Math.toRadians(270));
+    private final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
+    private final Pose2d firstLineStartPose = new Pose2d(-6, -20, Math.toRadians(268));
+    private final Pose2d secondLineStartPose = new Pose2d(20, -20, Math.toRadians(268));
+    private final Pose2d thirdLineStartPose = new Pose2d(45, -20, Math.toRadians(267));
     private final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(230));
 
     MecanumDrive drive;
@@ -45,10 +46,10 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
                 .build();
 
         firstLineIntake = drive.commandBuilder(firstLineStartPose).fresh()
-                .lineToY(-44)
+                .lineToY(-47)
                 .build();
 
-        secondCycle = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, -44, Math.toRadians(270)))
+        secondCycle = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, -47, Math.toRadians(270)))
                 .setReversed(true)
                 .splineToLinearHeading(scorePose,scorePose.heading)
                 .build();
@@ -56,9 +57,9 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
                 .build();
         secondLineIntake = drive.commandBuilder(secondLineStartPose)
-                .lineToY(-44)
+                .lineToY(-47)
                 .build();
-        thirdCycle = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, -44, Math.toRadians(270)))
+        thirdCycle = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, -47, Math.toRadians(270)))
                 .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();
@@ -66,9 +67,9 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
                 .build();
         thirdLineIntake = drive.commandBuilder(thirdLineStartPose)
-                .lineToY(-46)
+                .lineToY(-49)
                 .build();
-        fourthCycle = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, -46, Math.toRadians(270)))
+        fourthCycle = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, -49, Math.toRadians(270)))
                 .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();
@@ -90,18 +91,25 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
                 Intake.INSTANCE.intakeArtifactAuto(),
                 firstLineIntake,
                 secondCycle,
+                Intake.INSTANCE.stopIntake(),
+                new Delay(0.5),
                 Catapults.INSTANCE.shootArtifact,
                 Intake.INSTANCE.intakeArtifactAuto(),
                 secondLineStart,
                 secondLineIntake,
                 thirdCycle,
+                Intake.INSTANCE.stopIntake(),
+                new Delay(0.5),
                 Catapults.INSTANCE.shootArtifact,
                 Intake.INSTANCE.intakeArtifactAuto(),
                 thirdLineStart,
                 thirdLineIntake,
                 Intake.INSTANCE.intakeArtifactAuto(),
                 fourthCycle,
-                Catapults.INSTANCE.shootArtifact
+                Intake.INSTANCE.stopIntake(),
+                new Delay(0.5),
+                Catapults.INSTANCE.shootArtifact,
+                leave
         ).schedule();
 
     }
