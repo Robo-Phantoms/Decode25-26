@@ -22,7 +22,6 @@ import dev.nextftc.hardware.impl.ServoEx;
 @Config
 @TeleOp(name="CatapultTeleop")
 public class CatapultTeleop extends NextFTCOpMode {
-
     public CatapultTeleop() {
         addComponents(
                 BulkReadComponent.INSTANCE,

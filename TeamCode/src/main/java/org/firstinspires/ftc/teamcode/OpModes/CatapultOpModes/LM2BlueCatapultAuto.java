@@ -77,7 +77,6 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
         leave = drive.commandBuilder(scorePose)
                 .strafeToLinearHeading(leavePose.position, leavePose.heading)
                 .build();
-
     }
 
     @Override

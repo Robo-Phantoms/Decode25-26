@@ -78,7 +78,6 @@ public class LM2RedCatapultAuto extends NextFTCOpMode {
         leave = drive.commandBuilder(new Pose2d(-39.1, 33.5, Math.toRadians(133)))
                 .strafeToLinearHeading(leavePose.position, leavePose.heading)
                 .build();
-
     }
 
     @Override
