@@ -2,13 +2,16 @@ package org.firstinspires.ftc.teamcode.util.Subsystems;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.subsystems.Subsystem;
+import dev.nextftc.hardware.controllable.Controllable;
 import dev.nextftc.hardware.impl.MotorEx;
+import dev.nextftc.hardware.impl.VoltageCompensatingMotor;
 import dev.nextftc.hardware.powerable.SetPower;
 
 public class Intake implements Subsystem {
     public static Intake INSTANCE = new Intake();
     private Intake() {}
     private MotorEx rightIntake = new MotorEx("Intake");
+    private Controllable intake = new VoltageCompensatingMotor(rightIntake);
     /*private NormalizedColorSensor colorSensor;
     private float[] hsv = new float[3];
 
@@ -19,13 +22,13 @@ public class Intake implements Subsystem {
     } */
 
     public Command intakeArtifactTele(float power){
-        return new SetPower(rightIntake, power);
+        return new SetPower(intake, power);
     }
     public Command intakeArtifactAuto(){
-        return new SetPower(rightIntake, -1.0).requires(this);
+        return new SetPower(intake, -1.0).requires(this);
     }
     public Command stopIntake(){
-        return new SetPower(rightIntake, 0.0).requires(this);
+        return new SetPower(intake, 0.0).requires(this);
     }
 
     /*public Command runIntake(){

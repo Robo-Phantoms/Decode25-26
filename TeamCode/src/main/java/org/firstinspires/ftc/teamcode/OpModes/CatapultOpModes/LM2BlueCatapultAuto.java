@@ -28,8 +28,8 @@ public class LM2BlueCatapultAuto extends NextFTCOpMode {
     private final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
     private final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
     private final Pose2d firstLineStartPose = new Pose2d(-6, -20, Math.toRadians(268));
-    private final Pose2d secondLineStartPose = new Pose2d(20, -20, Math.toRadians(268));
-    private final Pose2d thirdLineStartPose = new Pose2d(45, -20, Math.toRadians(267));
+    private final Pose2d secondLineStartPose = new Pose2d(19, -20, Math.toRadians(268));
+    private final Pose2d thirdLineStartPose = new Pose2d(43, -20, Math.toRadians(269));
     private final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(230));
 
     MecanumDrive drive;
