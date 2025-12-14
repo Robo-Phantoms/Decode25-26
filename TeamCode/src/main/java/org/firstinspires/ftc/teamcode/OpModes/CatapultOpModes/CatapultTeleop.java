@@ -22,16 +22,24 @@ import dev.nextftc.hardware.impl.ServoEx;
 @Config
 @TeleOp(name="CatapultTeleop")
 public class CatapultTeleop extends NextFTCOpMode {
+
     public CatapultTeleop() {
         addComponents(
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(Intake.INSTANCE, Catapults.INSTANCE, Steadier.INSTANCE)
+                new SubsystemComponent(Intake.INSTANCE, Drivetrain.INSTANCE, Catapults.INSTANCE, Steadier.INSTANCE)
         );
     }
 
     @Override
     public void onStartButtonPressed() {
+        //--- Gamepad1 Commands ---
+        button(() -> gamepad1.left_bumper).whenTrue(Drivetrain.INSTANCE.strafeLeft);
+        button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
+        button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.forward);
+        button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.backward);
+
+        // --- Gamepad2 Commands ---
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
                 .whenFalse(() -> Intake.INSTANCE.intakeArtifactTele(gamepad2.right_stick_y).schedule())
                 .whenTrue(() -> Intake.INSTANCE.stopIntake().schedule());
