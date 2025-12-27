@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.TestOpModes;
 
-import static dev.nextftc.bindings.Bindings.button;
-
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.util.Subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.util.localizers.MecanumDrive;
+import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
 
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;

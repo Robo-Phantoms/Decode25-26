@@ -8,11 +8,9 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes.LM2BlueCatapultAuto;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Limelight;
-import org.firstinspires.ftc.teamcode.util.localizers.MecanumDrive;
-import org.firstinspires.ftc.teamcode.util.localizers.ThreeDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
 
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
