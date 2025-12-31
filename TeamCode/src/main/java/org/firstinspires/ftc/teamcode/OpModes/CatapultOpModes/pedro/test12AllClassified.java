@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.pedroPathing.Constants;
 
+import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -17,6 +18,7 @@ import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
+
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 
@@ -139,47 +141,22 @@ public class test12AllClassified extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed(){
         new SequentialGroup(
-                Catapults.INSTANCE.catapultsDown,
+                Catapults.INSTANCE.down,
                 new FollowPath(scorePreload),
-                Catapults.INSTANCE.shootArtifact,
-
+                new Delay(1.0),
+                Catapults.INSTANCE.shoot,
                 new ParallelGroup(
-                     new FollowPath(secondLineStart) ,
-                     Intake.INSTANCE.intakeArtifactAuto()
+                        new FollowPath(secondLineStart),
+                        Intake.INSTANCE.run
                 ),
                 new FollowPath(secondLineEnd),
-                new FollowPath(openGate),
-
+                new Delay(1.0),
                 new ParallelGroup(
-                        new FollowPath(score2),
-                        Intake.INSTANCE.stopIntake()
+                        new FollowPath(openGate),
+                        Intake.INSTANCE.stop
                 ),
-                Catapults.INSTANCE.shootArtifact,
+                new FollowPath(score2)
 
-                new ParallelGroup(
-                        new FollowPath(firstLineStart),
-                        Intake.INSTANCE.intakeArtifactAuto()
-                ),
-                new FollowPath(firstLineEnd),
-
-                new ParallelGroup(
-                        new FollowPath(score3),
-                        Intake.INSTANCE.stopIntake()
-                ),
-                Catapults.INSTANCE.shootArtifact,
-
-                new ParallelGroup(
-                        new FollowPath(thirdLineStart),
-                        Intake.INSTANCE.intakeArtifactAuto()
-                ),
-                new FollowPath(thirdLineEnd),
-
-                new ParallelGroup(
-                        new FollowPath(score4),
-                        Intake.INSTANCE.stopIntake()
-                ),
-                Catapults.INSTANCE.shootArtifact,
-                new FollowPath(leave)
         ).schedule();
     }
 }

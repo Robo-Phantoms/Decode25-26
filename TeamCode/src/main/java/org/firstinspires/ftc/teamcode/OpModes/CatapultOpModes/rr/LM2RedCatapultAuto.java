@@ -81,26 +81,26 @@ public class LM2RedCatapultAuto extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed(){
         new SequentialGroup(
-                Catapults.INSTANCE.catapultsDown,
+                Catapults.INSTANCE.down,
                 firstCycle,
-                Catapults.INSTANCE.shootArtifact,
-                Intake.INSTANCE.intakeArtifactAuto(),
+                Catapults.INSTANCE.shoot,
+                Intake.INSTANCE.run,
                 firstLineStart,
-                Intake.INSTANCE.intakeArtifactAuto(),
+                Intake.INSTANCE.run,
                 firstLineIntake,
                 secondCycle,
-                Catapults.INSTANCE.shootArtifact,
-                Intake.INSTANCE.intakeArtifactAuto(),
+                Catapults.INSTANCE.shoot,
+                Intake.INSTANCE.run,
                 secondLineStart,
                 secondLineIntake,
                 thirdCycle,
-                Catapults.INSTANCE.shootArtifact,
-                Intake.INSTANCE.intakeArtifactAuto(),
+                Catapults.INSTANCE.shoot,
+                Intake.INSTANCE.run,
                 thirdLineStart,
                 thirdLineIntake,
-                Intake.INSTANCE.intakeArtifactAuto(),
+                Intake.INSTANCE.run,
                 fourthCycle,
-                Catapults.INSTANCE.shootArtifact,
+                Catapults.INSTANCE.shoot,
                 leave
         ).schedule();
     }

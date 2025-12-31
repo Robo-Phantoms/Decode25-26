@@ -5,7 +5,6 @@ import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.Controllable;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.impl.VoltageCompensatingMotor;
-import dev.nextftc.hardware.powerable.SetPower;
 
 public class Intake implements Subsystem {
     public static Intake INSTANCE = new Intake();
@@ -21,15 +20,11 @@ public class Intake implements Subsystem {
         NONE
     } */
 
-    public Command intakeArtifactTele(float power){
-        return new SetPower(intake, power);
+    public Command run(float power){
+        return instant("run intake teleop", () -> intake.setPower(power));
     }
-    public Command intakeArtifactAuto(){
-        return new SetPower(intake, -1.0).requires(this);
-    }
-    public Command stopIntake(){
-        return new SetPower(intake, 0.0).requires(this);
-    }
+    public Command run = instant("run intake auto", () -> intake.setPower(-1.0));
+    public Command stop = instant("stop intake", () -> intake.setPower(0));
 
     /*public Command runIntake(){
         return new LambdaCommand("run-intake")
@@ -43,8 +38,8 @@ public class Intake implements Subsystem {
                     );
 
                     Colors color = updateHSV();
-                    if(color == Colors.GREEN || color == Colors.PURPLE) new SequentialGroup(intakeArtifactAuto(), new Delay(3.0), stopIntake()).schedule();
-                    else stopIntake().schedule();
+                    if(color == Colors.GREEN || color == Colors.PURPLE) new SequentialGroup(intakeArtifactAuto(), new Delay(3.0), stop()).schedule();
+                    else stop().schedule();
 
                 })
                 .requires(this);
