@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes.pedro;
+package org.firstinspires.ftc.teamcode.OpModes.pedro;
 
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
@@ -22,9 +22,9 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 
-@Autonomous(name = "test12 (All Classified)")
-public class test12AllClassified extends NextFTCOpMode {
-    public test12AllClassified(){
+@Autonomous(name = "LM3BlueCatapultAutoPedro")
+public class LM3BlueCatapultAutoPedro extends NextFTCOpMode {
+    public LM3BlueCatapultAutoPedro() {
         addComponents(
                 new PedroComponent(Constants::createFollower),
                 new SubsystemComponent(Catapults.INSTANCE, Intake.INSTANCE),
@@ -32,7 +32,7 @@ public class test12AllClassified extends NextFTCOpMode {
         );
     }
 
-    private final Pose startPose = new Pose(22,125, Math.toRadians(144));
+    private final Pose startPose = new Pose(22, 125, Math.toRadians(144));
     private final Pose scorePose = new Pose(36, 112.5, Math.toRadians(138));
     private final Pose firstLineStartPose = new Pose(42, 84, Math.toRadians(180));
     private final Pose firstLineEndPose = firstLineStartPose.withX(19);
@@ -40,7 +40,7 @@ public class test12AllClassified extends NextFTCOpMode {
     private final Pose secondLineEndPose = secondLineStartPose.withX(19);
     private final Pose thirdLineStartPose = new Pose(42, 36, Math.toRadians(180));
     private final Pose thirdLineEndPose = thirdLineStartPose.withX(19);
-    private final Pose openGatePose = new Pose(14, 70, Math.toRadians(0));
+    private final Pose openGatePose = new Pose(14, 64, Math.toRadians(180));
     private final Pose leavePose = new Pose(22, 96, Math.toRadians(230));
 
     private PathChain scorePreload, secondLineStart, secondLineEnd, openGate, score2;
@@ -72,7 +72,7 @@ public class test12AllClassified extends NextFTCOpMode {
         openGate = follower().pathBuilder()
                 .addPath(new BezierCurve(
                         secondLineEndPose,
-                        new Pose(34, 70),
+                        new Pose(40, 65),
                         openGatePose
                 ))
                 .setLinearHeadingInterpolation(secondLineEndPose.getHeading(), openGatePose.getHeading())
@@ -138,8 +138,9 @@ public class test12AllClassified extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(scorePose.getHeading(), leavePose.getHeading())
                 .build();
     }
+
     @Override
-    public void onStartButtonPressed(){
+    public void onStartButtonPressed() {
         new SequentialGroup(
                 Catapults.INSTANCE.down,
                 new FollowPath(scorePreload),
@@ -155,8 +156,8 @@ public class test12AllClassified extends NextFTCOpMode {
                         new FollowPath(openGate),
                         Intake.INSTANCE.stop
                 ),
-                new FollowPath(score2)
-
+                new FollowPath(score2),
+                Catapults.INSTANCE.shoot
         ).schedule();
     }
 }

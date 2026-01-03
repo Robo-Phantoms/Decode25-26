@@ -1,22 +1,24 @@
-package org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes.rr;
+package org.firstinspires.ftc.teamcode.OpModes.rr;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 
-@Autonomous(name = "LM1BlueAuto")
-public class LM1BlueCatapultAuto extends NextFTCOpMode {
-    public LM1BlueCatapultAuto(){
+@Autonomous(name = "LM2BlueAuto")
+public class LM2BlueCatapultAuto extends NextFTCOpMode {
+    public LM2BlueCatapultAuto(){
         addComponents(
                 new SubsystemComponent(Catapults.INSTANCE, Intake.INSTANCE),
                 BulkReadComponent.INSTANCE
@@ -24,13 +26,14 @@ public class LM1BlueCatapultAuto extends NextFTCOpMode {
     }
 
     private final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
-    private final Pose2d scorePose = new Pose2d(-39.1, -33.5, Math.toRadians(233));
-    private final Pose2d firstLineStartPose = new Pose2d(-8, -22, Math.toRadians(270));
-    private final Pose2d secondLineStartPose = new Pose2d(16, -22, Math.toRadians(270));
-    private final Pose2d thirdLineStartPose = new Pose2d(41, -22, Math.toRadians(270));
+    private final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
+    private final Pose2d firstLineStartPose = new Pose2d(-6, -20, Math.toRadians(268));
+    private final Pose2d secondLineStartPose = new Pose2d(20, -20, Math.toRadians(268));
+    private final Pose2d thirdLineStartPose = new Pose2d(45, -20, Math.toRadians(267));
+    private final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(230));
 
     MecanumDrive drive;
-    Command firstCycle, firstLineStart, firstLineIntake, secondCycle, secondLineStart, secondLineIntake,thirdLineIntake, thirdCycle, thirdLineStart,fourthCycle;
+    Command firstCycle, firstLineStart, firstLineIntake, secondCycle, secondLineStart, secondLineIntake,thirdLineIntake, thirdCycle, thirdLineStart,fourthCycle, leave;
     @Override
     public void onInit(){
         drive = new MecanumDrive(hardwareMap, startPose);
@@ -43,10 +46,10 @@ public class LM1BlueCatapultAuto extends NextFTCOpMode {
                 .build();
 
         firstLineIntake = drive.commandBuilder(firstLineStartPose).fresh()
-                .lineToY(-44)
+                .lineToY(-47)
                 .build();
 
-        secondCycle = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, -44, Math.toRadians(270)))
+        secondCycle = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, -47, Math.toRadians(270)))
                 .setReversed(true)
                 .splineToLinearHeading(scorePose,scorePose.heading)
                 .build();
@@ -54,9 +57,9 @@ public class LM1BlueCatapultAuto extends NextFTCOpMode {
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
                 .build();
         secondLineIntake = drive.commandBuilder(secondLineStartPose)
-                .lineToY(-44)
+                .lineToY(-47)
                 .build();
-        thirdCycle = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, -44, Math.toRadians(270)))
+        thirdCycle = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, -47, Math.toRadians(270)))
                 .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();
@@ -64,11 +67,17 @@ public class LM1BlueCatapultAuto extends NextFTCOpMode {
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
                 .build();
         thirdLineIntake = drive.commandBuilder(thirdLineStartPose)
-                .lineToY(-46)
+                .lineToY(-49)
                 .build();
-        fourthCycle = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, -46, Math.toRadians(270)))
+        fourthCycle = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, -49, Math.toRadians(270)))
+                .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();
+
+        leave = drive.commandBuilder(scorePose)
+                .strafeToLinearHeading(leavePose.position, leavePose.heading)
+                .build();
+
     }
 
     @Override
@@ -82,18 +91,25 @@ public class LM1BlueCatapultAuto extends NextFTCOpMode {
                 Intake.INSTANCE.run,
                 firstLineIntake,
                 secondCycle,
+                Intake.INSTANCE.stop,
+                new Delay(0.5),
                 Catapults.INSTANCE.shoot,
                 Intake.INSTANCE.run,
                 secondLineStart,
                 secondLineIntake,
                 thirdCycle,
+                Intake.INSTANCE.stop,
+                new Delay(0.5),
                 Catapults.INSTANCE.shoot,
                 Intake.INSTANCE.run,
                 thirdLineStart,
                 thirdLineIntake,
                 Intake.INSTANCE.run,
                 fourthCycle,
-                Catapults.INSTANCE.shoot
+                Intake.INSTANCE.stop,
+                new Delay(0.5),
+                Catapults.INSTANCE.shoot,
+                leave
         ).schedule();
 
     }

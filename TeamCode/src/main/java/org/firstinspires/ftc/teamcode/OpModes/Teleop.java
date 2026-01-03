@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes;
+package org.firstinspires.ftc.teamcode.OpModes;
 
 import static dev.nextftc.bindings.Bindings.button;
 import static dev.nextftc.bindings.Bindings.range;
@@ -13,10 +13,10 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 @Config
-@TeleOp(name="CatapultTeleop")
-public class CatapultTeleop extends NextFTCOpMode {
+@TeleOp(name="Teleop")
+public class Teleop extends NextFTCOpMode {
 
-    public CatapultTeleop() {
+    public Teleop() {
         addComponents(
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,

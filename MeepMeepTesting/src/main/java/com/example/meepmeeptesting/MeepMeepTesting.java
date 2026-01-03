@@ -8,12 +8,13 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        final Pose2d startPose = new Pose2d(-51,48, Math.toRadians(127));
-        final Pose2d scorePose = new Pose2d(-38, 34.5, Math.toRadians(127));
-        final Pose2d firstLineStartPose = new Pose2d(-8, 22, Math.toRadians(90));
-        final Pose2d secondLineStartPose = new Pose2d(18, 22, Math.toRadians(90));
-        final Pose2d thirdLineStartPose = new Pose2d(43, 22, Math.toRadians(90));
-        final Pose2d leavePose = new Pose2d(2, 38, Math.toRadians(127));
+        final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
+        final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
+        final Pose2d firstLineStartPose = new Pose2d(-12, -25, Math.toRadians(270));
+        final Pose2d secondLineStartPose = new Pose2d(12, -25, Math.toRadians(270));
+        final Pose2d thirdLineStartPose = new Pose2d(36, -25, Math.toRadians(270));
+        final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(230));
+        final Pose2d openGatePose = new Pose2d(2,-55,Math.toRadians(270));
         final double START_TANGENT = 90;
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
@@ -21,34 +22,19 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(startPose.position, startPose.heading))
-                .strafeToLinearHeading(scorePose.position, scorePose.heading)
-
-                        .setTangent(START_TANGENT)
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
+                .lineToY(-49)
+                .splineToLinearHeading(openGatePose, openGatePose.heading)
+                .setReversed(true)
+                .splineToLinearHeading(scorePose, scorePose.heading)
                 .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
-
-                .lineToY(44)
-
+                .lineToY(-49)
                 .setReversed(true)
-                .splineToLinearHeading(scorePose, scorePose.heading)
-
-
-                .setTangent(START_TANGENT)
-                .splineToSplineHeading(secondLineStartPose, secondLineStartPose.heading)
-
-                .lineToY(44)
-
-                .setReversed(true)
-                .splineToLinearHeading(scorePose, scorePose.heading)
-
-
-                .setTangent(START_TANGENT)
+                .splineToLinearHeading(scorePose,scorePose.heading)
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
-
-                .lineToY(46)
-
-                .setReversed(true)
+                .lineToY(-49)
                 .splineToLinearHeading(scorePose, scorePose.heading)
-
                 .strafeToLinearHeading(leavePose.position, leavePose.heading)
                 .build());
 

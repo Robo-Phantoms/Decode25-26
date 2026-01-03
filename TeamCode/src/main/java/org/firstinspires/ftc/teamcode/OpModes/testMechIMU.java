@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes;
+package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,14 +7,16 @@ import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
-import dev.nextftc.hardware.driving.DriverControlledCommand;
+import dev.nextftc.hardware.driving.FieldCentric;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
+import dev.nextftc.hardware.impl.Direction;
+import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@TeleOp(name = "testMech")
-public class testmech extends NextFTCOpMode {
+@TeleOp(name = "testMech + IMU")
+public class testMechIMU extends NextFTCOpMode {
 
-    public testmech(){
+    public testMechIMU(){
         addComponents(
                 BindingsComponent.INSTANCE,
                 BulkReadComponent.INSTANCE
@@ -24,6 +26,8 @@ public class testmech extends NextFTCOpMode {
     private MotorEx rightFront = new MotorEx("rightFront").brakeMode();
     private MotorEx leftBack = new MotorEx("leftBack").brakeMode().reversed();
     private MotorEx rightBack = new MotorEx("rightBack").brakeMode();
+    private IMUEx imu = new IMUEx("imu", Direction. FORWARD, Direction. UP).zeroed();
+
 
     @Override
     public void onStartButtonPressed() {
@@ -34,7 +38,8 @@ public class testmech extends NextFTCOpMode {
                 rightBack,
                 Gamepads.gamepad1().leftStickY().negate(),
                 Gamepads.gamepad1().leftStickX(),
-                Gamepads.gamepad1().rightStickX()
+                Gamepads.gamepad1().rightStickX(),
+                new FieldCentric(imu)
         );
 
         startDrive.schedule();

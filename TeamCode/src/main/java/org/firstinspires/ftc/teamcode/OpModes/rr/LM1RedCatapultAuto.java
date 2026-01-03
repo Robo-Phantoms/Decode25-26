@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.OpModes.CatapultOpModes.rr;
+package org.firstinspires.ftc.teamcode.OpModes.rr;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;

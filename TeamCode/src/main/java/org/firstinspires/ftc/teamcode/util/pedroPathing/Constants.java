@@ -25,8 +25,10 @@ public class Constants {
             .lateralZeroPowerAcceleration(lateralZPA)
             // PID's
             .translationalPIDFCoefficients(new PIDFCoefficients(0.15,0,0.03,0.02))
-            .headingPIDFCoefficients(new PIDFCoefficients(0.6,0,0.01,0.02)) //TODO: IMPROVE! + SECONDARY
+            .headingPIDFCoefficients(new PIDFCoefficients(0.9,0,0.07,0.02)) //TODO: IMPROVE! + SECONDARY
+            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(0.01, 0, 0.08, 0.02))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.04, 0, 0.00001, 0.6, 0.01)) //TODO: IMPROVE + SECONDARY
+            .useSecondaryHeadingPIDF(true)
             .centripetalScaling(0.0008);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
