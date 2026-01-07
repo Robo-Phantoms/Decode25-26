@@ -28,6 +28,7 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
 
     public static Params PARAMS = new Params();
 
+
     public final Encoder par0, par1, perp;
 
     public final double inPerTick;

@@ -24,10 +24,10 @@ public class Drivetrain implements Subsystem {
     public static final Drivetrain INSTANCE = new Drivetrain();
     private Drivetrain(){}
 
-    private MotorEx leftFront = new MotorEx("leftFront");
-    private MotorEx rightFront = new MotorEx("rightFront").reversed();
-    private MotorEx leftBack = new MotorEx("leftBack");
-    private MotorEx rightBack = new MotorEx("rightBack").reversed();
+    private MotorEx leftFront = new MotorEx("leftFront").brakeMode();
+    private MotorEx rightFront = new MotorEx("rightFront").brakeMode().reversed();
+    private MotorEx leftBack = new MotorEx("leftBack").brakeMode();
+    private MotorEx rightBack = new MotorEx("rightBack").brakeMode().reversed();
     private MotorGroup leftMotors = new MotorGroup(leftFront, leftBack);
     private MotorGroup rightMotors = new MotorGroup(rightFront, rightBack);
     public double POWER = 1.0;

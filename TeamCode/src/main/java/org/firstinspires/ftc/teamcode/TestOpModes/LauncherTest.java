@@ -33,6 +33,7 @@ public class LauncherTest extends NextFTCOpMode {
     private MotorEx launcher = new MotorEx("launcher");
     private MotorEx launcher2 = new MotorEx("launcher2").reversed();
     private MotorGroup launcherGroup = new MotorGroup(launcher, launcher2);
+    MotorEx flywheelMotor;
     public static double targetPos = 50;
     public static PIDCoefficients coefficients = new PIDCoefficients(0,0,0);
     public static GravityFeedforwardParameters feedforward = new GravityFeedforwardParameters(0);
@@ -55,5 +56,7 @@ public class LauncherTest extends NextFTCOpMode {
         telemetry.addData("pos:", launcherGroup.getLeader().getCurrentPosition());
         telemetry.addData("target", targetPos);
         telemetry.update();
+
+
     }
 }

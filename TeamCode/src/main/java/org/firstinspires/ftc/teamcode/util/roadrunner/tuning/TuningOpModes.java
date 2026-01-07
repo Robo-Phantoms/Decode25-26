@@ -40,12 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
-import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
-import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.OTOSLocalizer;
-import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.PinpointLocalizer;
-import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.TankDrive;
-import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.ThreeDeadWheelLocalizer;
-import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +51,7 @@ public final class TuningOpModes {
     public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
 
     public static final String GROUP = "quickstart";
-    public static final boolean DISABLED = true;
+    public static final boolean DISABLED = false;
 
     private TuningOpModes() {}
 
@@ -131,6 +126,7 @@ public final class TuningOpModes {
         if (DRIVE_CLASS.equals(MecanumDrive.class)) {
             dvf = hardwareMap -> {
                 MecanumDrive md = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+
                 LazyImu lazyImu = md.lazyImu;
 
                 List<EncoderGroup> encoderGroups = new ArrayList<>();
@@ -180,7 +176,7 @@ public final class TuningOpModes {
                 }
 
                 return new DriveView(
-                    DriveType.MECANUM,
+                        DriveType.MECANUM,
                         MecanumDrive.PARAMS.inPerTick,
                         MecanumDrive.PARAMS.maxWheelVel,
                         MecanumDrive.PARAMS.minProfileAccel,

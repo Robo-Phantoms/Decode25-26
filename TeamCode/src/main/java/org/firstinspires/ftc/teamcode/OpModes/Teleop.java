@@ -31,6 +31,8 @@ public class Teleop extends NextFTCOpMode {
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
         button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.forward);
         button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.backward);
+        range(() -> gamepad1.right_trigger).greaterThan(0.1)
+                .whenBecomesTrue(Catapults.INSTANCE.voltageCompUp);
 
 
         // --- Gamepad2 Commands ---
@@ -38,8 +40,6 @@ public class Teleop extends NextFTCOpMode {
                 .whenFalse(() -> Intake.INSTANCE.run(gamepad2.right_stick_y).schedule())
                 .whenTrue(() -> Intake.INSTANCE.stop.schedule());
 
-        button(() -> gamepad2.right_bumper).toggleOnBecomesTrue()
-                .whenBecomesTrue(Catapults.INSTANCE.down)
-                .whenBecomesFalse(Catapults.INSTANCE.voltageCompUp);
+        button(() -> gamepad2.right_bumper).whenBecomesTrue(Catapults.INSTANCE.down);
     }
 }

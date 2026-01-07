@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
 import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.TankDrive;
 
-@Disabled
 public final class SplineTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

@@ -9,7 +9,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 public class BreakBeamTest extends NextFTCOpMode {
 
     private DigitalChannel breakBeam;
-    int count = 0;
+    private int count = 0;
     boolean lastDetected = false;
 
     @Override
