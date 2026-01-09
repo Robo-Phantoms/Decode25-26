@@ -25,4 +25,5 @@ public class Intake implements Subsystem {
     }
     public Command run = instant("run intake auto", () -> intake.setPower(-1.0)).requires(this);
     public Command stop = instant("stop intake", () -> intake.setPower(0)).requires(this);
+    public Command reverse = instant("reverse intake", () -> intake.setPower(-1.0)).requires(this);
 }

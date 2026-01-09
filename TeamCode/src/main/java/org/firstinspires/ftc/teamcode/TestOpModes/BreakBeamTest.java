@@ -27,6 +27,8 @@ public class BreakBeamTest extends NextFTCOpMode {
 
         lastDetected = detected;
 
+        if (count >= 3) count = 0;
+
         telemetry.addLine(detected ? "object detected" : "no object detected");
         telemetry.addData("count", count);
         telemetry.update();

@@ -76,24 +76,24 @@ public class LM1RedCatapultAuto extends NextFTCOpMode {
         new SequentialGroup(
                 Catapults.INSTANCE.down,
                 firstCycle,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 Intake.INSTANCE.run,
                 firstLineStart,
                 Intake.INSTANCE.run,
                 firstLineIntake,
                 secondCycle,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 Intake.INSTANCE.run,
                 secondLineStart,
                 secondLineIntake,
                 thirdCycle,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 Intake.INSTANCE.run,
                 thirdLineStart,
                 thirdLineIntake,
                 Intake.INSTANCE.run,
                 fourthCycle,
-                Catapults.INSTANCE.shoot
+                Catapults.INSTANCE.shoot3
         ).schedule();
 
     }

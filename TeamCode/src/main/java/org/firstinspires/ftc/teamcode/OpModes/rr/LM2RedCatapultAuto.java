@@ -2,14 +2,12 @@ package org.firstinspires.ftc.teamcode.OpModes.rr;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
 
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
@@ -86,24 +84,24 @@ public class LM2RedCatapultAuto extends NextFTCOpMode {
         new SequentialGroup(
                 Catapults.INSTANCE.down,
                 firstCycle,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 Intake.INSTANCE.run,
                 firstLineStart,
                 Intake.INSTANCE.run,
                 firstLineIntake,
                 secondCycle,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 Intake.INSTANCE.run,
                 secondLineStart,
                 secondLineIntake,
                 thirdCycle,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 Intake.INSTANCE.run,
                 thirdLineStart,
                 thirdLineIntake,
                 Intake.INSTANCE.run,
                 fourthCycle,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 leave
         ).schedule();
 

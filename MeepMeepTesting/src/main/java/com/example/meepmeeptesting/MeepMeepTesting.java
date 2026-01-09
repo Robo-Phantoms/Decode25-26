@@ -11,11 +11,16 @@ public class MeepMeepTesting {
         final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
         final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
         final Pose2d firstLineStartPose = new Pose2d(-12, -25, Math.toRadians(270));
-        final Pose2d secondLineStartPose = new Pose2d(12, -25, Math.toRadians(270));
-        final Pose2d thirdLineStartPose = new Pose2d(36, -25, Math.toRadians(270));
+        final Pose2d firstLineEndPose = new Pose2d(-12, -49, Math.toRadians(270));
+        final Pose2d secondLineStartPose = new Pose2d(12, -22, Math.toRadians(270));
+        final Pose2d secondLineEndPose = new Pose2d(12, -49, Math.toRadians(270));
+
+        final Pose2d thirdLineStartPose = new Pose2d(36, -29, Math.toRadians(270));
+        final Pose2d thirdLineEndPose = new Pose2d(36, -49, Math.toRadians(270));
+
         final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(0));
-        final Pose2d openGatePose = new Pose2d(2,-55,Math.toRadians(270));
-        final double START_TANGENT = 90;
+        final Pose2d openGateStartPose = new Pose2d(7,-35,Math.toRadians(230));
+        final Pose2d openGateEndPose = new Pose2d(2.5, -55, Math.toRadians(230));
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 .setConstraints(80, 80, Math.toRadians(180), Math.toRadians(180), 15)
@@ -23,17 +28,24 @@ public class MeepMeepTesting {
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(startPose.position, startPose.heading))
                 .splineToLinearHeading(scorePose, scorePose.heading)
-                .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
-                .lineToY(-49)
-                .splineToLinearHeading(openGatePose, openGatePose.heading)
+                .splineToLinearHeading(secondLineStartPose, Math.toRadians(270))
+                .lineToYSplineHeading(secondLineEndPose.position.y, Math.toRadians(270))
                 .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
-                .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
-                .lineToY(-49)
                 .setReversed(true)
-                .splineToLinearHeading(scorePose,scorePose.heading)
+                .splineToLinearHeading(openGateStartPose, Math.toRadians(270))
+                .lineToYSplineHeading(openGateEndPose.position.y, Math.toRadians(220))
+
+                .lineToYLinearHeading(-25, Math.toRadians(220))
+                .splineToSplineHeading(scorePose, scorePose.heading)
+
+                .splineToLinearHeading(firstLineStartPose, Math.toRadians(270))
+                .lineToYSplineHeading(firstLineEndPose.position.y, Math.toRadians(270))
+                .setReversed(true)
+                .splineToLinearHeading(scorePose, scorePose.heading)
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
-                .lineToY(-49)
+                .lineToYSplineHeading(thirdLineEndPose.position.y, Math.toRadians(270))
+                .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .strafeToLinearHeading(leavePose.position, leavePose.heading)
                 .build());

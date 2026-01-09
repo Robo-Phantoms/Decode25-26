@@ -145,7 +145,7 @@ public class LM3BlueCatapultAutoPedro extends NextFTCOpMode {
                 Catapults.INSTANCE.down,
                 new FollowPath(scorePreload),
                 new Delay(1.0),
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(
                         new FollowPath(secondLineStart),
                         Intake.INSTANCE.run
@@ -157,7 +157,7 @@ public class LM3BlueCatapultAutoPedro extends NextFTCOpMode {
                         Intake.INSTANCE.stop
                 ),
                 new FollowPath(score2),
-                Catapults.INSTANCE.shoot
+                Catapults.INSTANCE.shoot3
         ).schedule();
     }
 }

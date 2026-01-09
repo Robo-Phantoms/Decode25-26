@@ -94,21 +94,21 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
     public void onStartButtonPressed(){
         new SequentialGroup(
                 score1,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake1, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(Intake.INSTANCE.stop, openGate),
                 openGateForward,
                 score2,
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake2, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(score3, Intake.INSTANCE.stop),
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake3, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(score4, Intake.INSTANCE.stop),
-                Catapults.INSTANCE.shoot,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(leave, Catapults.INSTANCE.stop)
         ).schedule();
     }
