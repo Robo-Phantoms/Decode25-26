@@ -29,9 +29,9 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
     final Pose2d scorePose = new Pose2d(-36, 34.5, Math.toRadians(360 - 233));
     final Pose2d firstLineStartPose = new Pose2d(-10, 25, Math.toRadians(90));
     final Pose2d secondLineStartPose = new Pose2d(16, 22, Math.toRadians(90));
-    final Pose2d thirdLineStartPose = new Pose2d(40, 25, Math.toRadians(90));
+    final Pose2d thirdLineStartPose = new Pose2d(40, 18, Math.toRadians(90));
     final Pose2d leavePose = new Pose2d(2, 38, Math.toRadians(180));
-    final Pose2d openGatePose = new Pose2d(2.5,48,Math.toRadians(90));
+    final Pose2d openGatePose = new Pose2d(1,48,Math.toRadians(90));
 
     public Command score1, intake1, openGate, score2, intake2, score3, intake3, score4, leave, openGateForward;
     MecanumDrive drive;
@@ -47,39 +47,39 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
 
         intake1 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
-                .lineToY(47)
+                .lineToYSplineHeading(48, Math.toRadians(90))
                 .build();
 
-        openGate = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, 47, Math.toRadians(90))).fresh()
+        openGate = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
                 .splineToLinearHeading(openGatePose, openGatePose.heading)
                 .build();
 
         openGateForward = drive.commandBuilder(openGatePose).fresh()
-                .lineToY(58)
+                .lineToY(60)
                 .waitSeconds(1.0)
                 .build();
 
-        score2 = drive.commandBuilder(new Pose2d(openGatePose.position.x, 58, Math.toRadians(90))).fresh()
+        score2 = drive.commandBuilder(new Pose2d(openGatePose.position.x, 60, Math.toRadians(90))).fresh()
                 .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();
 
         intake2 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
-                .lineToY(47)
+                .lineToYSplineHeading(48, Math.toRadians(90))
                 .build();
 
-        score3 = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, 47, Math.toRadians(90))).fresh()
+        score3 = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
                 .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();
 
         intake3 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
-                .lineToY(47)
+                .lineToYSplineHeading(48, Math.toRadians(90))
                 .build();
 
-        score4 = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, 47, Math.toRadians(90))).fresh()
+        score4 = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
                 .setReversed(true)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();

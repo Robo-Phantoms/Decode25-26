@@ -27,7 +27,7 @@ public class Ball15Blue extends NextFTCOpMode {
         );
     }
 
-    private DigitalChannel breakBeam;
+    //private DigitalChannel breakBeam;
     private int count = 0;
     boolean lastDetected = false;
 
@@ -53,13 +53,13 @@ public class Ball15Blue extends NextFTCOpMode {
     public void onInit(){
         drive = new MecanumDrive(hardwareMap, startPose);
 
-        breakBeam = hardwareMap.get(DigitalChannel.class, "breakBeam");
+       /* breakBeam = hardwareMap.get(DigitalChannel.class, "breakBeam");
         breakBeam.setMode(DigitalChannel.Mode.INPUT);
-        lastDetected = breakBeam.getState();
+        lastDetected = breakBeam.getState();*/
 
         Catapults.INSTANCE.down.schedule();
 
-        shootBasedOnCount = new LambdaCommand("change catapult powers")
+        /*shootBasedOnCount = new LambdaCommand("change catapult powers")
                 .setStart(() -> {
                     if (count == 2){
                         Catapults.INSTANCE.shoot2.schedule(); //slower
@@ -68,7 +68,7 @@ public class Ball15Blue extends NextFTCOpMode {
                     } else{
                         Catapults.INSTANCE.shoot3.schedule();
                     }
-                }).setIsDone(() -> true);
+                }).setIsDone(() -> true);*/
 
 
         score1 = drive.commandBuilder(startPose)
@@ -129,24 +129,24 @@ public class Ball15Blue extends NextFTCOpMode {
                 new ParallelGroup(intake1, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(score2, Intake.INSTANCE.stop),
-                shootBasedOnCount,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(openGate, Intake.INSTANCE.run),
-                new WaitUntil(() -> count >= 3).endAfter(2.0),
+                //new WaitUntil(() -> count >= 3).endAfter(2.0),
                 new ParallelGroup(score3, Intake.INSTANCE.stop),
-                shootBasedOnCount,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake3, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(score4, Intake.INSTANCE.stop),
-                shootBasedOnCount,
+                Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake4, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(score5, Intake.INSTANCE.stop),
-                shootBasedOnCount,
+                Catapults.INSTANCE.shoot3,
                 leave
         ).schedule();
     }
 
-    @Override
+    /*@Override
     public void onUpdate(){
         boolean detected = breakBeam.getState();
         if (detected && !lastDetected) {
@@ -158,5 +158,5 @@ public class Ball15Blue extends NextFTCOpMode {
         telemetry.addLine(detected ? "object detected" : "no object detected");
         telemetry.addData("count", count);
         telemetry.update();
-    }
+    }*/
 }

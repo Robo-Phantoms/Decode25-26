@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.util.Subsystems.*;
 
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
@@ -30,16 +31,15 @@ public class Teleop extends NextFTCOpMode {
         button(() -> gamepad1.left_bumper).whenTrue(Drivetrain.INSTANCE.strafeLeft);
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
         button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.forward);
-        button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.backward);
-        range(() -> gamepad1.right_trigger).greaterThan(0.1)
-                .whenBecomesTrue(Catapults.INSTANCE.voltageCompUp);
-
+        button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.backward);;
 
         // --- Gamepad2 Commands ---
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
                 .whenFalse(() -> Intake.INSTANCE.run(gamepad2.right_stick_y).schedule())
                 .whenTrue(() -> Intake.INSTANCE.stop.schedule());
 
-        button(() -> gamepad2.right_bumper).whenBecomesTrue(Catapults.INSTANCE.down);
+        button(() -> gamepad2.right_bumper).toggleOnBecomesTrue()
+                .whenBecomesTrue(Catapults.INSTANCE.down)
+                .whenBecomesFalse(Catapults.INSTANCE.voltageCompUp);
     }
 }

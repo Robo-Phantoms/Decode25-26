@@ -38,7 +38,7 @@ public class MeepMeepTesting {
 
                 .lineToYLinearHeading(-25, Math.toRadians(220))
                 .splineToSplineHeading(scorePose, scorePose.heading)
-
+                        .waitSeconds(0.001)
                 .splineToLinearHeading(firstLineStartPose, Math.toRadians(270))
                 .lineToYSplineHeading(firstLineEndPose.position.y, Math.toRadians(270))
                 .setReversed(true)

@@ -5,9 +5,11 @@ import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.TimeTurn;
 import com.acmerobotics.roadrunner.Vector2d;
 
+import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
 import org.jetbrains.annotations.NotNull;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.conditionals.IfElseCommand;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
@@ -18,24 +20,29 @@ import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.driving.DifferentialTankDriverControlled;
 import dev.nextftc.hardware.driving.DriverControlledCommand;
+import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 
 public class Drivetrain implements Subsystem {
     public static final Drivetrain INSTANCE = new Drivetrain();
-    private Drivetrain(){}
 
-    private MotorEx leftFront = new MotorEx("leftFront").brakeMode();
-    private MotorEx rightFront = new MotorEx("rightFront").brakeMode().reversed();
-    private MotorEx leftBack = new MotorEx("leftBack").brakeMode();
-    private MotorEx rightBack = new MotorEx("rightBack").brakeMode().reversed();
+    private Drivetrain() {
+    }
+
+    private MotorEx leftFront = new MotorEx("leftFront");
+    private MotorEx rightFront = new MotorEx("rightFront").reversed();
+    private MotorEx leftBack = new MotorEx("leftBack");
+    private MotorEx rightBack = new MotorEx("rightBack").reversed();
     private MotorGroup leftMotors = new MotorGroup(leftFront, leftBack);
     private MotorGroup rightMotors = new MotorGroup(rightFront, rightBack);
     public double POWER = 1.0;
 
-    public DriverControlledCommand startDrive = new DifferentialTankDriverControlled(
-            leftMotors, rightMotors, Gamepads.gamepad1().leftStickY(), Gamepads.gamepad1().rightStickY()
-    );
-
+    public Command tankDrive = new DifferentialTankDriverControlled(
+            leftMotors,
+            rightMotors,
+            Gamepads.gamepad1().leftStickY(),
+            Gamepads.gamepad1().rightStickY()
+    ).requires(this);
     public Command strafeRight = new LambdaCommand("strafe-right")
             .setStart(() -> {
                 setDtPowers(-POWER, POWER, POWER, -POWER);
@@ -49,7 +56,7 @@ public class Drivetrain implements Subsystem {
                 setDtPowers(POWER, -POWER, -POWER, POWER);
             })
             .setStop(interrupted -> {
-                setDtPowers(0, 0 , 0, 0 );
+                setDtPowers(0, 0, 0, 0);
             }).requires(this);
 
     public Command forward = new LambdaCommand("forward")
@@ -78,16 +85,17 @@ public class Drivetrain implements Subsystem {
         });
     }*/
 
-    public void setDtPowers(double lfPower, double rfPower, double lbPower, double rbPower){
+    public void setDtPowers(double lfPower, double rfPower, double lbPower, double rbPower) {
         leftFront.setPower(lfPower);
         rightFront.setPower(rfPower);
         leftBack.setPower(lbPower);
         rightBack.setPower(rbPower);
     }
 
+
     @Override
     @NotNull
-    public Command getDefaultCommand(){
-        return startDrive;
+    public Command getDefaultCommand() {
+        return tankDrive;
     }
 }
