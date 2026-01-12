@@ -39,7 +39,6 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
     @Override
     public void onInit(){
         drive = new MecanumDrive(hardwareMap, startPose);
-        Catapults.INSTANCE.down.schedule();
 
         score1 = drive.commandBuilder(startPose)
                 .splineToLinearHeading(scorePose, scorePose.heading)
@@ -48,7 +47,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
         //TODO: Maybe play around with intake speeds until uncontrollable
         intake1 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
-                .lineToYSplineHeading(-45, Math.toRadians(270))
+                .lineToY(-45)
                 .build();
 
         openGate = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, -45, Math.toRadians(270))).fresh()
@@ -67,7 +66,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
 
         intake2 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
-                .lineToYSplineHeading(-45, Math.toRadians(270))
+                .lineToY(-45)
                 .build();
 
         score3 = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, -45, Math.toRadians(270))).fresh()
@@ -77,7 +76,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
 
         intake3 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
-                .lineToYSplineHeading(-45, Math.toRadians(270))
+                .lineToY(-45)
                 .build();
 
         score4 = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, -45, Math.toRadians(270))).fresh()
@@ -94,6 +93,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed(){
         new SequentialGroup(
+                Catapults.INSTANCE.down,
                 score1,
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake1, Intake.INSTANCE.run),

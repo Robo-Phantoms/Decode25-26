@@ -68,20 +68,20 @@ public final class MecanumDrive extends NextFTCMecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP;
 
         // drive model parameters
-        public double inPerTick = 0.00200158458779867395021058337851;
-        public double lateralInPerTick = 0.0014131318041358545;
-        public double trackWidthTicks = 7574.650413684028;
+        public double inPerTick = 0.00201452134133545977252696520754;
+        public double lateralInPerTick = 0.0013021288473160115;
+        public double trackWidthTicks = 7621.4017479712775;
 
         // feedforward parameters (in tick units)
-        public double kS = 1.132510738461522;
-        public double kV = 0.00026714069950742753;
-        public double kA = 0.00001;
+        public double kS = 1.3153877048968718;
+        public double kV = 0.0002607526226773736;
+        public double kA = 0;
 
         // path profile parameters (in inches)
 
         //TODO: increase the hell out of these things
         public double maxWheelVel = 80;
-        public double minProfileAccel = -30;
+        public double minProfileAccel = -30; // TODO: Increase during manualff or manualfb
         public double maxProfileAccel = 80;
 
         // turn profile parameters (in radians)
@@ -89,15 +89,16 @@ public final class MecanumDrive extends NextFTCMecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 3;
-        public double lateralGain = 3;
-        public double headingGain = 5; // shared with turn
+        //TODO: Increase until jittery
+        public double axialGain = 0;
+        public double lateralGain = 0;
+        public double headingGain = 0; // shared with turn
 
 
         //TODO: Increase the hell out of these too (axial mainly)
-        public double axialVelGain = 0.008;
-        public double lateralVelGain = 0.0;
-        public double headingVelGain = 0.001; // shared with turn
+        public double axialVelGain = 0;
+        public double lateralVelGain = 0;
+        public double headingVelGain = 0; // shared with turn
     }
 
     public static Params PARAMS = new Params();

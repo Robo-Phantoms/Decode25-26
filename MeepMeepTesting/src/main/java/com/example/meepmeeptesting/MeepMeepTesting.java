@@ -35,10 +35,9 @@ public class MeepMeepTesting {
                 .setReversed(true)
                 .splineToLinearHeading(openGateStartPose, Math.toRadians(270))
                 .lineToYSplineHeading(openGateEndPose.position.y, Math.toRadians(220))
-
-                .lineToYLinearHeading(-25, Math.toRadians(220))
+                .splineToLinearHeading(new Pose2d(openGateEndPose.position.x, -25, Math.toRadians(220)), Math.toRadians(220))
                 .splineToSplineHeading(scorePose, scorePose.heading)
-                        .waitSeconds(0.001)
+                .waitSeconds(0.001)
                 .splineToLinearHeading(firstLineStartPose, Math.toRadians(270))
                 .lineToYSplineHeading(firstLineEndPose.position.y, Math.toRadians(270))
                 .setReversed(true)

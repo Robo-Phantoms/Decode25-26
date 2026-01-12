@@ -47,7 +47,7 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
 
         intake1 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
-                .lineToYSplineHeading(48, Math.toRadians(90))
+                .lineToY(48)
                 .build();
 
         openGate = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
@@ -66,7 +66,7 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
 
         intake2 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
-                .lineToYSplineHeading(48, Math.toRadians(90))
+                .lineToY(48)
                 .build();
 
         score3 = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
@@ -76,7 +76,7 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
 
         intake3 = drive.commandBuilder(scorePose).fresh()
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
-                .lineToYSplineHeading(48, Math.toRadians(90))
+                .lineToY(48)
                 .build();
 
         score4 = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
