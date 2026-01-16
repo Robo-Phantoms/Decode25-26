@@ -26,10 +26,10 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
     }
 
     final Pose2d startPose = new Pose2d(-51,48, Math.toRadians(360 - 230));
-    final Pose2d scorePose = new Pose2d(-36, 34.5, Math.toRadians(360 - 233));
-    final Pose2d firstLineStartPose = new Pose2d(-10, 25, Math.toRadians(90));
-    final Pose2d secondLineStartPose = new Pose2d(16, 22, Math.toRadians(90));
-    final Pose2d thirdLineStartPose = new Pose2d(40, 18, Math.toRadians(90));
+    final Pose2d scorePose = new Pose2d(-36, 33, Math.toRadians(360 - 233));
+    final Pose2d firstLineStartPose = new Pose2d(-10, 25, Math.toRadians(96));
+    final Pose2d secondLineStartPose = new Pose2d(14, 22, Math.toRadians(93));
+    final Pose2d thirdLineStartPose = new Pose2d(38, 18, Math.toRadians(90));
     final Pose2d leavePose = new Pose2d(2, 38, Math.toRadians(180));
     final Pose2d openGatePose = new Pose2d(1,48,Math.toRadians(90));
 
@@ -39,15 +39,15 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
     @Override
     public void onInit(){
         drive = new MecanumDrive(hardwareMap, startPose);
-        Catapults.INSTANCE.down.schedule();
 
         score1 = drive.commandBuilder(startPose)
                 .splineToLinearHeading(scorePose, scorePose.heading)
                 .build();
 
         intake1 = drive.commandBuilder(scorePose).fresh()
+                .setReversed(true)
                 .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
-                .lineToY(48)
+                .lineToY(54)
                 .build();
 
         openGate = drive.commandBuilder(new Pose2d(firstLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
@@ -55,7 +55,7 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
                 .build();
 
         openGateForward = drive.commandBuilder(openGatePose).fresh()
-                .lineToY(60)
+                .lineToY(62)
                 .waitSeconds(1.0)
                 .build();
 
@@ -65,8 +65,9 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
                 .build();
 
         intake2 = drive.commandBuilder(scorePose).fresh()
+                .setReversed(true)
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
-                .lineToY(48)
+                .lineToY(54)
                 .build();
 
         score3 = drive.commandBuilder(new Pose2d(secondLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
@@ -75,16 +76,17 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
                 .build();
 
         intake3 = drive.commandBuilder(scorePose).fresh()
+                .setReversed(true)
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
-                .lineToY(48)
+                .lineToY(54)
                 .build();
 
         score4 = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, 48, Math.toRadians(90))).fresh()
                 .setReversed(true)
-                .splineToLinearHeading(scorePose, scorePose.heading)
+                .splineToLinearHeading(new Pose2d(scorePose.position.x, 31, Math.toRadians(360-233)),scorePose.heading)
                 .build();
 
-        leave = drive.commandBuilder(scorePose).fresh()
+        leave = drive.commandBuilder(new Pose2d(scorePose.position.x, 31, Math.toRadians(360-233))).fresh()
                 .strafeToLinearHeading(leavePose.position, leavePose.heading)
                 .build();
 
@@ -93,21 +95,25 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed(){
         new SequentialGroup(
+                Catapults.INSTANCE.down,
                 score1,
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake1, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(Intake.INSTANCE.stop, openGate),
                 openGateForward,
+                new Delay(0.1),
                 score2,
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake2, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(score3, Intake.INSTANCE.stop),
+                new Delay(0.1),
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake3, Intake.INSTANCE.run),
-                new Delay(0.5),
+                new Delay(0.1),
                 new ParallelGroup(score4, Intake.INSTANCE.stop),
+                new Delay(0.5),
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(leave, Catapults.INSTANCE.stop)
         ).schedule();

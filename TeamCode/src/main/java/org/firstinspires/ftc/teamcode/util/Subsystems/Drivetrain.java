@@ -2,12 +2,15 @@ package org.firstinspires.ftc.teamcode.util.Subsystems;
 
 
 
+import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.TankDrive;
 import org.jetbrains.annotations.NotNull;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.Gamepads;
+import dev.nextftc.hardware.controllable.MotorGroup;
+import dev.nextftc.hardware.driving.DifferentialTankDriverControlled;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 
@@ -17,21 +20,19 @@ public class Drivetrain implements Subsystem {
     private Drivetrain() {
     }
 
-    private MotorEx leftFront = new MotorEx("leftFront").reversed();
-    private MotorEx rightFront = new MotorEx("rightFront");
-    private MotorEx leftBack = new MotorEx("leftBack").reversed();
-    private MotorEx rightBack = new MotorEx("rightBack");
+    private MotorEx leftFront = new MotorEx("leftFront");
+    private MotorEx rightFront = new MotorEx("rightFront").reversed();
+    private MotorEx leftBack = new MotorEx("leftBack");
+    private MotorEx rightBack = new MotorEx("rightBack").reversed();
+    private MotorGroup leftMotors = new MotorGroup(leftFront, leftBack);
+    private MotorGroup rightMotors = new MotorGroup(rightFront, rightBack);
+    public double POWER = 1.0;
 
-    public double POWER = -1.0;
-
-    public Command drive = new MecanumDriverControlled(
-            leftFront,
-            rightFront,
-            leftBack,
-            rightBack,
-            Gamepads.gamepad1().leftStickY().negate(),
-            Gamepads.gamepad1().leftStickX(),
-            Gamepads.gamepad1().rightStickX()
+    public Command drive = new DifferentialTankDriverControlled(
+            leftMotors,
+            rightMotors,
+            Gamepads.gamepad1().leftStickY(),
+            Gamepads.gamepad1().rightStickY()
     ).requires(this);
 
     public Command strafeRight = new LambdaCommand("strafe right")
@@ -47,12 +48,12 @@ public class Drivetrain implements Subsystem {
             .requires(this);
 
     public Command forward = new LambdaCommand("forward")
-            .setStart(() -> setDtPowers(POWER, POWER, POWER, POWER))
+            .setStart(() -> setDtPowers(-POWER, -POWER, -POWER, -POWER))
             .setStop(interrupted -> stopMotors())
             .requires(this);
 
     public Command backward = new LambdaCommand("backward")
-            .setStart(() -> setDtPowers(-POWER, -POWER, -POWER, -POWER))
+            .setStart(() -> setDtPowers(POWER, POWER, POWER, POWER))
             .setStop(interrupted -> stopMotors())
             .requires(this);
 

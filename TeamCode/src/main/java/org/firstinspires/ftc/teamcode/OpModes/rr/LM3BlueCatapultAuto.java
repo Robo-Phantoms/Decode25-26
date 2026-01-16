@@ -27,11 +27,11 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
 
     final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
     final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
-    final Pose2d firstLineStartPose = new Pose2d(-8, -22, Math.toRadians(270));
-    final Pose2d secondLineStartPose = new Pose2d(18, -18, Math.toRadians(270));
-    final Pose2d thirdLineStartPose = new Pose2d(40, -14, Math.toRadians(270));
+    final Pose2d firstLineStartPose = new Pose2d(-4.25, -22, Math.toRadians(270));
+    final Pose2d secondLineStartPose = new Pose2d(17, -18, Math.toRadians(270));
+    final Pose2d thirdLineStartPose = new Pose2d(42, -14, Math.toRadians(270));
     final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(0));
-    final Pose2d openGatePose = new Pose2d(2.5,-45,Math.toRadians(270));
+    final Pose2d openGatePose = new Pose2d(2.5,-43,Math.toRadians(270));
 
     public Command score1, intake1, openGate, score2, intake2, score3, intake3, score4, leave, openGateForward;
     MecanumDrive drive;
@@ -41,11 +41,12 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
         drive = new MecanumDrive(hardwareMap, startPose);
 
         score1 = drive.commandBuilder(startPose)
-                .splineToLinearHeading(scorePose, scorePose.heading)
+                .lineToYSplineHeading(scorePose.position.y, scorePose.heading)
                 .build();
 
         //TODO: Maybe play around with intake speeds until uncontrollable
         intake1 = drive.commandBuilder(scorePose).fresh()
+                .setReversed(true)
                 .splineToLinearHeading(firstLineStartPose, firstLineStartPose.heading)
                 .lineToY(-45)
                 .build();
@@ -55,7 +56,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
                 .build();
 
         openGateForward = drive.commandBuilder(openGatePose).fresh()
-                .lineToY(-51)
+                .lineToY(-53)
                 .waitSeconds(1.0)
                 .build();
 
@@ -65,6 +66,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
                 .build();
 
         intake2 = drive.commandBuilder(scorePose).fresh()
+                .setReversed(true)
                 .splineToLinearHeading(secondLineStartPose, secondLineStartPose.heading)
                 .lineToY(-45)
                 .build();
@@ -75,13 +77,14 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
                 .build();
 
         intake3 = drive.commandBuilder(scorePose).fresh()
+                .setReversed(true)
                 .splineToLinearHeading(thirdLineStartPose, thirdLineStartPose.heading)
                 .lineToY(-45)
                 .build();
 
         score4 = drive.commandBuilder(new Pose2d(thirdLineStartPose.position.x, -45, Math.toRadians(270))).fresh()
                 .setReversed(true)
-                .splineToLinearHeading(scorePose, scorePose.heading)
+                .splineToLinearHeading(new Pose2d(-36, -32.5, Math.toRadians(233)), scorePose.heading)
                 .build();
 
         leave = drive.commandBuilder(scorePose).fresh()
@@ -109,6 +112,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
                 new ParallelGroup(intake3, Intake.INSTANCE.run),
                 new Delay(0.5),
                 new ParallelGroup(score4, Intake.INSTANCE.stop),
+                new Delay(0.5),
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(leave, Catapults.INSTANCE.stop)
         ).schedule();

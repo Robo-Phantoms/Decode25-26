@@ -75,14 +75,14 @@ public final class MecanumDrive extends NextFTCMecanumDrive {
         // feedforward parameters (in tick units)
         public double kS = 1.3153877048968718;
         public double kV = 0.0002607526226773736;
-        public double kA = 0;
+        public double kA = 0.00009;
 
         // path profile parameters (in inches)
 
         //TODO: increase the hell out of these things
-        public double maxWheelVel = 80;
+        public double maxWheelVel = 100;
         public double minProfileAccel = -30; // TODO: Increase during manualff or manualfb
-        public double maxProfileAccel = 80;
+        public double maxProfileAccel = 100;
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
@@ -90,13 +90,13 @@ public final class MecanumDrive extends NextFTCMecanumDrive {
 
         // path controller gains
         //TODO: Increase until jittery
-        public double axialGain = 0;
-        public double lateralGain = 0;
-        public double headingGain = 0; // shared with turn
+        public double axialGain = 4.5;
+        public double lateralGain = 6;
+        public double headingGain = 6; // shared with turn
 
 
         //TODO: Increase the hell out of these too (axial mainly)
-        public double axialVelGain = 0;
+        public double axialVelGain = 0.001;
         public double lateralVelGain = 0;
         public double headingVelGain = 0; // shared with turn
     }
