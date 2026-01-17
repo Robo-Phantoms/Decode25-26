@@ -27,7 +27,7 @@ public class LM3RedCatapultAuto extends NextFTCOpMode {
 
     final Pose2d startPose = new Pose2d(-51,48, Math.toRadians(360 - 230));
     final Pose2d scorePose = new Pose2d(-36, 33, Math.toRadians(360 - 233));
-    final Pose2d firstLineStartPose = new Pose2d(-10, 25, Math.toRadians(96));
+    final Pose2d firstLineStartPose = new Pose2d(-10, 25, Math.toRadians(92));
     final Pose2d secondLineStartPose = new Pose2d(14, 22, Math.toRadians(93));
     final Pose2d thirdLineStartPose = new Pose2d(38, 18, Math.toRadians(90));
     final Pose2d leavePose = new Pose2d(2, 38, Math.toRadians(180));
