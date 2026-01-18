@@ -16,7 +16,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 
-@Autonomous(name = "LM3BlueAuto")
+//@Autonomous(name = "LM3BlueAuto")
 public class LM3BlueCatapultAuto extends NextFTCOpMode {
     public LM3BlueCatapultAuto(){
         addComponents(
@@ -29,7 +29,7 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
     final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
     final Pose2d firstLineStartPose = new Pose2d(-6, -22, Math.toRadians(270));
     final Pose2d secondLineStartPose = new Pose2d(17, -18, Math.toRadians(270));
-    final Pose2d thirdLineStartPose = new Pose2d(42, -14, Math.toRadians(270));
+    final Pose2d thirdLineStartPose = new Pose2d(42, -14, Math.toRadians(268));
     final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(0));
     final Pose2d openGatePose = new Pose2d(2.5,-43,Math.toRadians(270));
 

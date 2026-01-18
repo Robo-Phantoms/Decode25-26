@@ -15,7 +15,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 
-@Autonomous(name = "LM2RedAuto")
+//@Autonomous(name = "LM2RedAuto")
 public class LM2RedCatapultAuto extends NextFTCOpMode {
     public LM2RedCatapultAuto(){
         addComponents(

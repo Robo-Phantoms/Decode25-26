@@ -28,7 +28,6 @@ public class Intake implements Subsystem {
                     new ParallelGroup(
                             instant(() -> stop.schedule()),
                             instant(() -> count = 0),
-                            instant(() -> ActiveOpMode.gamepad2().rumble(500))
                     );
                 }
             })

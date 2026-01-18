@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.util.roadrunner.localizers.MecanumDrive;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.delays.WaitUntil;
+import dev.nextftc.core.commands.groups.ParallelDeadlineGroup;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.LambdaCommand;
@@ -131,7 +132,7 @@ public class Ball15Blue extends NextFTCOpMode {
                 new ParallelGroup(score2, Intake.INSTANCE.stop),
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(openGate, Intake.INSTANCE.run),
-                //new WaitUntil(() -> count >= 3).endAfter(2.0),
+                new ParallelDeadlineGroup(new Delay(2.0), new WaitUntil(() -> count >= 3)),
                 new ParallelGroup(score3, Intake.INSTANCE.stop),
                 Catapults.INSTANCE.shoot3,
                 new ParallelGroup(intake3, Intake.INSTANCE.run),
