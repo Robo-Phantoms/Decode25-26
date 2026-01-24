@@ -10,8 +10,13 @@ import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 
+import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.groups.ParallelGroup;
+import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
@@ -29,21 +34,17 @@ public class Teleop extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        //Intake.INSTANCE.detectArtifacts.schedule();
-
-        //--- Gamepad1 Commands ---
         button(() -> gamepad1.left_bumper).whenTrue(Drivetrain.INSTANCE.strafeLeft);
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
         button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.forward);
         button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.backward);
-
-        // --- Gamepad2 Commands ---
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
                 .whenFalse(() -> Intake.INSTANCE.run(gamepad2.right_stick_y).schedule())
                 .whenTrue(() -> Intake.INSTANCE.stop.schedule());
-
         button(() -> gamepad2.right_bumper).toggleOnBecomesTrue()
                 .whenBecomesTrue(Catapults.INSTANCE.down)
-                .whenBecomesFalse(Catapults.INSTANCE.voltageCompUp);
+                .whenBecomesFalse(new SequentialGroup(Catapults.INSTANCE.voltageCompUp, new InstantCommand(() -> Intake.INSTANCE.resetCount())));
+        button(() -> Intake.INSTANCE.getCount() >= 4).whenBecomesTrue(Intake.INSTANCE.overload);
+
     }
 }

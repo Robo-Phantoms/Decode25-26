@@ -80,9 +80,9 @@ public final class MecanumDrive extends NextFTCMecanumDrive {
         // path profile parameters (in inches)
 
         //TODO: increase the hell out of these things
-        public double maxWheelVel = 160;
-        public double minProfileAccel = -30; // TODO: Increase during manualff or manualfb
-        public double maxProfileAccel = 160;
+        public double maxWheelVel = 180;
+        public double minProfileAccel = -30;
+        public double maxProfileAccel = 180;
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path

@@ -18,9 +18,9 @@ public class Catapults implements Subsystem {
             new MotorGroup(catapultRight, catapultLeft)
     );
 
-    public Command up = instant("catapults up", () -> catapults.setPower(1.0)).requires(this);
-    public Command down = instant("catapults down", () -> catapults.setPower(-1.0)).requires(this);
-    public Command stop = instant("catapults stop", () -> catapults.setPower(0.0)).requires(this);
+    public Command up = instant(() -> catapults.setPower(1.0)).requires(this);
+    public Command down = instant(() -> catapults.setPower(-1.0)).requires(this);
+    public Command stop = instant(() -> catapults.setPower(0.0)).requires(this);
     public Command shoot3 = new SequentialGroup(up, new Delay(0.2), down).requires(this);
     public Command shoot2 = new SequentialGroup(instant(() -> catapults.setPower(0.7)), new Delay(0.2), down).requires(this);
     public Command shoot1 = new SequentialGroup(instant(() -> catapults.setPower(0.5)), new Delay(0.2), down).requires(this);
