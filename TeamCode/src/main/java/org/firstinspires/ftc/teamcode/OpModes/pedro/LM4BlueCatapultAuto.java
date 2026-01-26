@@ -17,7 +17,7 @@ import dev.nextftc.core.commands.delays.WaitUntil;
 import dev.nextftc.core.commands.groups.ParallelDeadlineGroup;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
-import dev.nextftc.core.commands.utility.InstantCommand;
+import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
@@ -36,15 +36,15 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
         );
     }
     private final Pose start = new Pose(23, 126, Math.toRadians(142));
-    private final  Pose score = new Pose(35, 116, Math.toRadians(142));
-    private final Pose line2Start = new Pose(48, 58, Math.toRadians(180));
-    private final Pose line2End = new Pose(20, 58, Math.toRadians(180));
+    private final  Pose score = new Pose(37, 114, Math.toRadians(142));
+    private final Pose line2Start = new Pose(48, 57, Math.toRadians(180));
+    private final Pose line2End = new Pose(20, 57, Math.toRadians(180));
     private final Pose openGate = new Pose(25, 64, Math.toRadians(180));
-    private final Pose openGateIntake = new Pose(9, 56.5, Math.toRadians(125));
+    private final Pose openGateIntake = new Pose(9, 56.5, Math.toRadians(150));
     private final Pose line1Start = new Pose(48, 82, Math.toRadians(180));
     private final Pose line1End = new Pose(23, 82, Math.toRadians(180));
-    private final Pose line3Start = new Pose(48, 35, Math.toRadians(180));
-    private final Pose line3End = new Pose(20, 35, Math.toRadians(180));
+    private final Pose line3Start = new Pose(48, 33, Math.toRadians(180));
+    private final Pose line3End = new Pose(20, 33, Math.toRadians(180));
     private final Pose leavePose = new Pose(32, 72, Math.toRadians(270));
 
     private PathChain score1, line2StartPath, line2EndPath, score2, open, score3, line1StartPath, line1EndPath,  score4, line3StartPath, line3EndPath, score5, leave;
@@ -57,34 +57,47 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed(){
-        /*button(() -> Intake.INSTANCE.getCount() > 3)
-                .whenTrue(new ParallelDeadlineGroup(new Delay(1.5), Intake.INSTANCE.reverse));*/
-
         new SequentialGroup(
                 Catapults.INSTANCE.down,
                 new FollowPath(score1),
+                new Delay(1.0),
                 new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //3
 
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line2StartPath)),
                 new FollowPath(line2EndPath, true, 0.5),
-                new ParallelGroup(Intake.INSTANCE.stop, new FollowPath(score2)),
+                new Delay(1.0),
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score2)),
+                Intake.INSTANCE.stop,
                 new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //6
-
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(open)),
-                new Delay(1.5),
-                new ParallelGroup(Intake.INSTANCE.stop, new FollowPath(score3)),
+                new ParallelGroup(new WaitUntil(() -> Intake.INSTANCE.getCount() == 3),
+                new LambdaCommand()
+                        .setUpdate(() -> {
+                            if (Intake.INSTANCE.getCount() > 3){
+                                new SequentialGroup(
+                                        Intake.INSTANCE.reverse,
+                                        new Delay(0.5),
+                                        Intake.INSTANCE.resetCount
+                                ).schedule();
+                            }
+                        })),
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score3)),
+                Intake.INSTANCE.stop,
                 new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //9
 
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line1StartPath)),
                 new FollowPath(line1EndPath, true, 0.5),
-                new ParallelGroup(Intake.INSTANCE.stop, new FollowPath(score4)),
+                new Delay(1.0),
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score4)),
+                Intake.INSTANCE.stop,
                 new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //12
 
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line3StartPath)),
                 new FollowPath(line3EndPath, true, 0.5),
-                new ParallelGroup(Intake.INSTANCE.stop, new FollowPath(score5)),
+                new Delay(1.0),
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score5)),
+                Intake.INSTANCE.stop,
                 new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //15
-
                 new FollowPath(leave)
         ).schedule();
     }

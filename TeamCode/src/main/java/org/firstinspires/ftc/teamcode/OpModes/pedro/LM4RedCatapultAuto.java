@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.OpModes.pedro;
 
 import static dev.nextftc.bindings.Bindings.button;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
-import static org.firstinspires.ftc.teamcode.util.pedroPathing.Poses.LM4RedPoses.*;
-
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -36,8 +34,19 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
                 BulkReadComponent.INSTANCE
         );
     }
+    private final Pose start = new Pose(23, 126, Math.toRadians(142)).mirror();
+    private final  Pose score = new Pose(35, 116, Math.toRadians(142)).mirror();
+    private final Pose line2Start = new Pose(48, 58, Math.toRadians(180)).mirror();
+    private final Pose line2End = new Pose(20, 58, Math.toRadians(180)).mirror();
+    private final Pose openGate = new Pose(25, 64, Math.toRadians(180)).mirror();
+    private final Pose openGateIntake = new Pose(9, 56.5, Math.toRadians(125)).mirror();
+    private final Pose line1Start = new Pose(48, 82, Math.toRadians(180)).mirror();
+    private final Pose line1End = new Pose(23, 82, Math.toRadians(180)).mirror();
+    private final Pose line3Start = new Pose(48, 35, Math.toRadians(180)).mirror();
+    private final Pose line3End = new Pose(20, 35, Math.toRadians(180)).mirror();
+    private final Pose leavePose = new Pose(32, 72, Math.toRadians(270)).mirror();
 
-    private PathChain score1, line2, score2, open, score3, line1, score4, line3, score5, leave;
+    private PathChain score1, line2StartPath, line2EndPath, score2, open, score3, line1StartPath, line1EndPath,  score4, line3StartPath, line3EndPath, score5, leave;
 
     @Override
     public void onInit(){
@@ -47,34 +56,36 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed(){
-        //button(() -> Intake.INSTANCE.getCount() > 3).whenBecomesTrue(Intake.INSTANCE.reverse);
+        button(() -> Intake.INSTANCE.getCount() > 3)
+                .whenBecomesTrue(new ParallelDeadlineGroup(new Delay(0.5), Intake.INSTANCE.reverse)
+                        .setInterruptible(false)
+                );
 
         new SequentialGroup(
                 Catapults.INSTANCE.down,
                 new FollowPath(score1),
-                Catapults.INSTANCE.shoot3,
-                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line2)),
+                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //3
+
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line2StartPath)),
+                new FollowPath(line2EndPath, true, 0.5),
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score2)),
-                new Delay(0.2),
-                Catapults.INSTANCE.shoot3,
-                new FollowPath(open),
-                Intake.INSTANCE.run,
-                new Delay(2.0),
-                /*new ParallelDeadlineGroup(
-                        new Delay(2.0),
-                        new WaitUntil(() -> Intake.INSTANCE.getCount() == 3)
-                ),*/
+                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount, Intake.INSTANCE.stop), //6
+
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(open)),
+                new ParallelDeadlineGroup(new WaitUntil(() -> Intake.INSTANCE.getCount() >= 3), new Delay(1.5)),
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score3)),
-                new Delay(0.2),
-                Catapults.INSTANCE.shoot3,
-                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line1)),
+                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount, Intake.INSTANCE.stop), //9
+
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line1StartPath)),
+                new FollowPath(line1EndPath, true, 0.5),
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score4)),
-                new Delay(0.2),
-                Catapults.INSTANCE.shoot3,
-                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line3)),
+                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount, Intake.INSTANCE.stop), //12
+
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line3StartPath)),
+                new FollowPath(line3EndPath, true, 0.5),
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score5)),
-                new Delay(0.2),
-                Catapults.INSTANCE.shoot3,
+                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount, Intake.INSTANCE.stop), //15
+
                 new FollowPath(leave)
         ).schedule();
     }
@@ -85,11 +96,14 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
                 .setConstantHeadingInterpolation(score.getHeading())
                 .build();
 
-        line2 = follower().pathBuilder()
+        line2StartPath = follower().pathBuilder()
                 .addPath(new BezierCurve(
                         score, new Pose(84, 60).mirror(), line2Start
                 ))
-                .setTangentHeadingInterpolation()
+                .setLinearHeadingInterpolation(score.getHeading(), line2Start.getHeading())
+                .build();
+
+        line2EndPath = follower().pathBuilder()
                 .addPath(new BezierLine(line2Start, line2End))
                 .setConstantHeadingInterpolation(line2End.getHeading())
                 .build();
@@ -119,11 +133,14 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(openGateIntake.getHeading(), score.getHeading())
                 .build();
 
-        line1 = follower().pathBuilder()
+        line1StartPath = follower().pathBuilder()
                 .addPath(new BezierCurve(
                         score, new Pose(79, 80).mirror(), line1Start
                 ))
                 .setLinearHeadingInterpolation(score.getHeading(), line1Start.getHeading())
+                .build();
+
+        line1EndPath = follower().pathBuilder()
                 .addPath(new BezierLine(line1Start, line1End))
                 .setConstantHeadingInterpolation(line1End.getHeading())
                 .build();
@@ -135,11 +152,14 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(line1End.getHeading(), score.getHeading())
                 .build();
 
-        line3 = follower().pathBuilder()
+        line3StartPath = follower().pathBuilder()
                 .addPath(new BezierCurve(
                         score, new Pose(85, 31).mirror(), line3Start
                 ))
                 .setLinearHeadingInterpolation(score.getHeading(), line3Start.getHeading())
+                .build();
+
+        line3EndPath = follower().pathBuilder()
                 .addPath(new BezierLine(line3Start, line3End))
                 .setConstantHeadingInterpolation(line3End.getHeading())
                 .build();

@@ -31,19 +31,23 @@ public class Teleop extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        button(() -> Intake.INSTANCE.getCount() > 3).whenTrue(Intake.INSTANCE.reverse);
+        button(() -> Intake.INSTANCE.getCount() > 3).whenBecomesTrue(Intake.INSTANCE.reverse);
 
 
         button(() -> gamepad1.left_bumper).whenTrue(Drivetrain.INSTANCE.strafeLeft);
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
         button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.forward);
         button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.backward);
+
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
-                .whenFalse(() -> Intake.INSTANCE.run(gamepad2.right_stick_y).schedule())
+                .whenFalse(() -> Intake.INSTANCE.run(-gamepad2.right_stick_y).schedule())
                 .whenTrue(() -> Intake.INSTANCE.stop.schedule());
+
         button(() -> gamepad2.right_bumper).toggleOnBecomesTrue()
                 .whenBecomesTrue(Catapults.INSTANCE.down)
                 .whenBecomesFalse(new SequentialGroup(Catapults.INSTANCE.voltageCompUp, Intake.INSTANCE.resetCount));
+
+        button(() -> gamepad2.left_bumper).whenBecomesTrue(Catapults.INSTANCE.stabilize);
 
     }
 }

@@ -5,7 +5,6 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
-import static org.firstinspires.ftc.teamcode.util.pedroPathing.Poses.*;
 
 import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
@@ -27,24 +26,42 @@ public class UTBlueAuto extends NextFTCOpMode {
         );
     }
 
-    private PathChain score1, line1, score2;
+    private final Pose start = new Pose(23, 126, Math.toRadians(142));
+    private final  Pose score = new Pose(35, 116, Math.toRadians(142));
+    private final Pose line2Start = new Pose(48, 58, Math.toRadians(180));
+    private final Pose line2End = new Pose(20, 58, Math.toRadians(180));
+    private final Pose openGate = new Pose(25, 64, Math.toRadians(180));
+    private final Pose line1Start = new Pose(48, 82, Math.toRadians(180));
+    private final Pose line1End = new Pose(23, 82, Math.toRadians(180));
+    private final Pose line3Start = new Pose(48, 35, Math.toRadians(180));
+    private final Pose line3End = new Pose(20, 35, Math.toRadians(180));
+    private final Pose leavePose = new Pose(32, 72, Math.toRadians(270));
+
+    private PathChain score1, line1StartPath, line1EndPath, gate1, score2;
 
     @Override
     public void onInit(){
-        follower().setStartingPose(combinedPosesBlue.start);
+        follower().setStartingPose(start);
 
         score1 = follower().pathBuilder()
-                .addPath(new BezierLine(combinedPosesBlue.start, combinedPosesBlue.score))
-                .setLinearHeadingInterpolation(combinedPosesBlue.start.getHeading(), combinedPosesBlue.score.getHeading())
+                .addPath(new BezierLine(start, score))
+                .setLinearHeadingInterpolation(start.getHeading(), score.getHeading())
                 .build();
 
-        line1 = follower().pathBuilder()
+        line1StartPath = follower().pathBuilder()
                 .addPath(new BezierCurve(
-                        combinedPosesBlue.score, new Pose(67, 83), combinedPosesBlue.score
+                        score, new Pose(67, 83), score
                 ))
-                .setLinearHeadingInterpolation(combinedPosesBlue.score.getHeading(), combinedPosesBlue.line1Start.getHeading())
-                .addPath(new BezierLine(combinedPosesBlue.line1Start, combinedPosesBlue.line1End))
-                .setConstantHeadingInterpolation(combinedPosesBlue.line1End.getHeading())
+                .setLinearHeadingInterpolation(score.getHeading(), line1Start.getHeading())
+                .build();
+
+        line1EndPath = follower().pathBuilder()
+                .addPath(new BezierLine(line1Start, line1End))
+                .setConstantHeadingInterpolation(line1End.getHeading())
+                .build();
+
+        gate1 = follower().pathBuilder()
+
                 .build();
 
 
