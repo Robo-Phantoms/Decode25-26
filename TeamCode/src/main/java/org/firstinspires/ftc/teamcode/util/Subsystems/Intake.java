@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.groups.ParallelGroup;
+import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.controllable.Controllable;
@@ -25,16 +26,17 @@ public class Intake implements Subsystem {
         return instant(() -> intake.setPower(power)).requires(this);
     }
     public Command run = instant(() -> intake.setPower(-1.0)).requires(this);
-    public Command stop = instant(() -> intake.setPower(0)).requires(this);
+    public Command stop = instant(() -> intake.setPower(0));
     public Command reverse = instant(() -> intake.setPower(1.0)).requires(this);
-    public Command overload = new ParallelGroup(
-            stop, instant(() -> ActiveOpMode.gamepad2().rumble(500))
-    );
+    public Command resetCount = instant(() -> count = 0);
+
 
     @Override
     public void initialize(){
         breakBeam = hardwareMap().get(DigitalChannel.class, "breakBeam");
         breakBeam.setMode(DigitalChannel.Mode.INPUT);
+
+        count = 0;
     }
 
     @Override
@@ -54,9 +56,5 @@ public class Intake implements Subsystem {
 
     public double getCount(){
         return count;
-    }
-
-    public void resetCount(){
-        count = 0;
     }
 }

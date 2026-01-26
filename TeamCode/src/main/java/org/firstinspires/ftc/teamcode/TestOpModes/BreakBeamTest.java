@@ -14,7 +14,6 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 
 @TeleOp(name = "break beam test")
 public class BreakBeamTest extends NextFTCOpMode {
-
     public BreakBeamTest(){
         addComponents(
                 new SubsystemComponent(Intake.INSTANCE),
@@ -23,36 +22,16 @@ public class BreakBeamTest extends NextFTCOpMode {
         );
     }
 
-    private DigitalChannel breakBeam;
-    private int count = 0;
-    boolean lastDetected = false;
-
-    @Override
-    public void onInit(){
-        breakBeam = hardwareMap.get(DigitalChannel.class, "breakBeam");
-        breakBeam.setMode(DigitalChannel.Mode.INPUT);
-    }
-
     @Override
     public void onStartButtonPressed(){
         Intake.INSTANCE.run.schedule();
 
-        button(() -> count>=4)
-                .whenBecomesTrue(Intake.INSTANCE.stop);
+        button(() -> Intake.INSTANCE.getCount() > 3)
+                .whenBecomesTrue(Intake.INSTANCE.reverse);
     }
+
     @Override
-    public void onUpdate(){
-        boolean detected = breakBeam.getState();
-        if (detected && !lastDetected) {
-            count++;
-        }
-
-        lastDetected = detected;
-
-        if (count >= 4) count = 0;
-
-        telemetry.addLine(detected ? "object detected" : "no object detected");
-        telemetry.addData("count", count);
-        telemetry.update();
+    public void onStop(){
+        Intake.INSTANCE.resetCount.schedule();
     }
 }
