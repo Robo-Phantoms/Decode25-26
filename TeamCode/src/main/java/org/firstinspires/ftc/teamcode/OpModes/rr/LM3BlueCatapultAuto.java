@@ -27,13 +27,13 @@ public class LM3BlueCatapultAuto extends NextFTCOpMode {
 
     final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
     final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(233));
-    final Pose2d firstLineStartPose = new Pose2d(-6, -22, Math.toRadians(270));
-    final Pose2d secondLineStartPose = new Pose2d(20, -18, Math.toRadians(270));
-    final Pose2d thirdLineStartPose = new Pose2d(42, -14, Math.toRadians(268));
+    final Pose2d firstLineStartPose = new Pose2d(-6, -20, Math.toRadians(270));
+    final Pose2d secondLineStartPose = new Pose2d(20, -20, Math.toRadians(270));
+    final Pose2d thirdLineStartPose = new Pose2d(42, -12, Math.toRadians(268));
     final Pose2d leavePose = new Pose2d(2, -38, Math.toRadians(0));
     final Pose2d openGatePose = new Pose2d(2.5,-43,Math.toRadians(270));
 
-    public Command score1, intake1, openGate, score2, intake2, score3, intake3, score4, leave, openGateForward;
+    private Command score1, intake1, openGate, score2, intake2, score3, intake3, score4, leave, openGateForward;
     MecanumDrive drive;
 
     @Override

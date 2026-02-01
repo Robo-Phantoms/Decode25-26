@@ -25,5 +25,5 @@ public class Catapults implements Subsystem {
     public Command shoot2 = new SequentialGroup(instant(() -> catapults.setPower(0.7)), new Delay(0.2), down).requires(this);
     public Command shoot1 = new SequentialGroup(instant(() -> catapults.setPower(0.5)), new Delay(0.2), down).requires(this);
     public Command voltageCompUp = new SequentialGroup(up, new Delay(0.5), stop).requires(this);
-    public Command stabilize = new SequentialGroup(up, new Delay(0.01), down);
+    public Command stabilize = new SequentialGroup(up, new Delay(0.0001), down);
 }

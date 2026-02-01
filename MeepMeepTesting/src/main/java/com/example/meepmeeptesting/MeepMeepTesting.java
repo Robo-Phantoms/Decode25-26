@@ -1,7 +1,6 @@
 package com.example.meepmeeptesting;
 
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
@@ -9,36 +8,44 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
+        final Pose2d startPose = new Pose2d(-51,-48, Math.toRadians(230));
+        final Pose2d scorePose = new Pose2d(-36, -34.5, Math.toRadians(230));
+        final Pose2d line2 = new Pose2d(12,-25, Math.toRadians(270));
+        final Pose2d gateStart = new Pose2d(4, -30, Math.toRadians(270));
+        final Pose2d gateEnd = new Pose2d(4, -56, Math.toRadians(220));
+        final Pose2d gateIntakePose = new Pose2d(15, -56, Math.toRadians(230));
+        final Pose2d scoreFromGate = new Pose2d(15,-25,Math.toRadians(270));
+        final Pose2d line1 = new Pose2d(-12, -25, Math.toRadians(270));
+        final Pose2d line3 = new Pose2d(36, -25, Math.toRadians(270));
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
-                .setConstraints(75, 75, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(250, 250, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(62, 10, 0))
-                .splineToLinearHeading(new Pose2d(new Vector2d(53, 15), Math.toRadians(-24)), Math.toRadians(-24))
-                .waitSeconds(1.7)
-                .turnTo(-140)
-                .strafeTo(new Vector2d(56, 58))
-                .strafeTo(new Vector2d(58, 58))
-                .strafeTo(new Vector2d(56, 50))
-                .strafeTo(new Vector2d(53, 15))
-                .turnTo(Math.toRadians(-24))
-                .waitSeconds(1.7)
-                .turnTo(-140)
-                .strafeTo(new Vector2d(60, 60))
-                .strafeTo(new Vector2d(53, 15))
-                .turnTo(Math.toRadians(-24))
-                .waitSeconds(1.7)
-                .turnTo(-140)
-                .strafeTo(new Vector2d(58, 58))
-                .strafeTo(new Vector2d(53, 15))
-                .waitSeconds(1.7)
-                .turnTo(Math.toRadians(-24))
-                .waitSeconds(1.7)
+        myBot.runAction(myBot.getDrive().actionBuilder(startPose)
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .setReversed(true)
+                .splineToLinearHeading(line2, line2.heading)
+                .lineToYSplineHeading(-50, line2.heading)
+                .setReversed(true)
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .setReversed(true)
+                .splineToLinearHeading(gateStart, gateStart.heading)
+                .lineToYSplineHeading(gateEnd.position.y, gateEnd.heading)
+                .splineToLinearHeading(gateIntakePose, gateIntakePose.heading)
+                .setTangent(Math.toRadians(270))
+                .lineToYSplineHeading(scoreFromGate.position.y, scoreFromGate.heading)
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                        .splineToLinearHeading(line1, line1.heading)
+                .lineToYSplineHeading(-50, Math.toRadians(270))
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                .splineToLinearHeading(line3, line3.heading)
+                .lineToYSplineHeading(-50, Math.toRadians(270))
+                .splineToLinearHeading(scorePose, scorePose.heading)
+                //.strafeToLinearHeading(leavePose.position, leavePose.heading)
                 .build());
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_BLACK)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)

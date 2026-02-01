@@ -7,7 +7,6 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.pedroPathing.Constants;
@@ -17,6 +16,7 @@ import dev.nextftc.core.commands.delays.WaitUntil;
 import dev.nextftc.core.commands.groups.ParallelDeadlineGroup;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -25,7 +25,7 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "LM4Blue")
+@Autonomous(name = "LM4BlueAuto")
 public class LM4BlueCatapultAuto extends NextFTCOpMode {
     public LM4BlueCatapultAuto(){
         addComponents(
@@ -36,16 +36,16 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
         );
     }
     private final Pose start = new Pose(23, 126, Math.toRadians(142));
-    private final  Pose score = new Pose(37, 114, Math.toRadians(142));
+    private final  Pose score = new Pose(35, 116, Math.toRadians(142));
     private final Pose line2Start = new Pose(48, 57, Math.toRadians(180));
     private final Pose line2End = new Pose(20, 57, Math.toRadians(180));
-    private final Pose openGate = new Pose(25, 64, Math.toRadians(180));
-    private final Pose openGateIntake = new Pose(9, 56.5, Math.toRadians(150));
+    private final Pose openGate = new Pose(24, 64, Math.toRadians(180));
+    private final Pose openGateIntake = new Pose(9.75, 56, Math.toRadians(150));
     private final Pose line1Start = new Pose(48, 82, Math.toRadians(180));
     private final Pose line1End = new Pose(23, 82, Math.toRadians(180));
     private final Pose line3Start = new Pose(48, 33, Math.toRadians(180));
     private final Pose line3End = new Pose(20, 33, Math.toRadians(180));
-    private final Pose leavePose = new Pose(32, 72, Math.toRadians(270));
+    private final Pose leavePose = new Pose(43, 127, Math.toRadians(142));
 
     private PathChain score1, line2StartPath, line2EndPath, score2, open, score3, line1StartPath, line1EndPath,  score4, line3StartPath, line3EndPath, score5, leave;
 
@@ -57,47 +57,57 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed(){
+        /*button(() -> Intake.INSTANCE.getCount() > 3)
+                .whenTrue(new SequentialGroup(Intake.INSTANCE.reverse, new Delay(0.5), new InstantCommand(() -> Intake.INSTANCE.resetCount())).setInterruptible(false));*/
+
         new SequentialGroup(
                 Catapults.INSTANCE.down,
                 new FollowPath(score1),
-                new Delay(1.0),
-                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //3
-
+                new Delay(0.25),
+                new ParallelGroup(Catapults.INSTANCE.shoot3, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //3
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line2StartPath)),
-                new FollowPath(line2EndPath, true, 0.5),
-                new Delay(1.0),
+                new FollowPath(line2EndPath),
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score2)),
                 Intake.INSTANCE.stop,
-                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //6
-                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(open)),
-                new ParallelGroup(new WaitUntil(() -> Intake.INSTANCE.getCount() == 3),
-                new LambdaCommand()
-                        .setUpdate(() -> {
-                            if (Intake.INSTANCE.getCount() > 3){
-                                new SequentialGroup(
-                                        Intake.INSTANCE.reverse,
-                                        new Delay(0.5),
-                                        Intake.INSTANCE.resetCount
-                                ).schedule();
-                            }
-                        })),
-                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score3)),
-                Intake.INSTANCE.stop,
-                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //9
-
-                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line1StartPath)),
-                new FollowPath(line1EndPath, true, 0.5),
+                new Delay(0.25),
+                Catapults.INSTANCE.stabilize,
+                new Delay(0.1),
+                Catapults.INSTANCE.stabilize,
                 new Delay(1.0),
+                new ParallelGroup(Catapults.INSTANCE.shoot3, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //6
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(open)),
+                new WaitUntil(() -> Intake.INSTANCE.getCount() == 3).endAfter(1.5),
+                new ParallelGroup(Intake.INSTANCE.reverse, new FollowPath(score3)),
+                Intake.INSTANCE.stop,
+                new Delay(0.25),
+                Catapults.INSTANCE.stabilize,
+                new Delay(0.1),
+                Catapults.INSTANCE.stabilize,
+                new Delay(1.0),
+
+                new ParallelGroup(Catapults.INSTANCE.shoot2, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //9
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line1StartPath)),
+                new FollowPath(line1EndPath),
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score4)),
                 Intake.INSTANCE.stop,
-                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //12
-
-                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line3StartPath)),
-                new FollowPath(line3EndPath, true, 0.5),
+                new Delay(0.25),
+                Catapults.INSTANCE.stabilize,
+                new Delay(0.1),
+                Catapults.INSTANCE.stabilize,
                 new Delay(1.0),
+
+                new ParallelGroup(Catapults.INSTANCE.shoot3, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //12
+                new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line3StartPath)),
+                new FollowPath(line3EndPath),
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(score5)),
                 Intake.INSTANCE.stop,
-                new ParallelGroup(Catapults.INSTANCE.shoot3, Intake.INSTANCE.resetCount), //15
+                new Delay(0.25),
+                Catapults.INSTANCE.stabilize,
+                new Delay(0.1),
+                Catapults.INSTANCE.stabilize,
+                new Delay(1.0),
+
+                new ParallelGroup(Catapults.INSTANCE.shoot3, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //15
                 new FollowPath(leave)
         ).schedule();
     }
@@ -140,7 +150,7 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
 
         score3 = follower().pathBuilder()
                 .addPath(new BezierCurve(
-                        openGateIntake, new Pose(72, 67), score
+                        openGateIntake, new Pose(75, 65), score
                 ))
                 .setLinearHeadingInterpolation(openGateIntake.getHeading(), score.getHeading())
                 .build();

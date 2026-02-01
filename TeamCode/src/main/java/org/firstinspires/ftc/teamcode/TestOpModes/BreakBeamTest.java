@@ -32,6 +32,6 @@ public class BreakBeamTest extends NextFTCOpMode {
 
     @Override
     public void onStop(){
-        Intake.INSTANCE.resetCount.schedule();
+        Intake.INSTANCE.resetCount();
     }
 }

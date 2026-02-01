@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 
+import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.BindingsComponent;
@@ -31,8 +32,8 @@ public class Teleop extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        button(() -> Intake.INSTANCE.getCount() > 3).whenBecomesTrue(Intake.INSTANCE.reverse);
-
+        //button(() -> Intake.INSTANCE.getCount() > 3)
+          //      .whenTrue(new SequentialGroup(Intake.INSTANCE.reverse, new Delay(0.5), Intake.INSTANCE.resetCount).setInterruptible(false));
 
         button(() -> gamepad1.left_bumper).whenTrue(Drivetrain.INSTANCE.strafeLeft);
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
@@ -45,9 +46,10 @@ public class Teleop extends NextFTCOpMode {
 
         button(() -> gamepad2.right_bumper).toggleOnBecomesTrue()
                 .whenBecomesTrue(Catapults.INSTANCE.down)
-                .whenBecomesFalse(new SequentialGroup(Catapults.INSTANCE.voltageCompUp, Intake.INSTANCE.resetCount));
+                .whenBecomesFalse(Catapults.INSTANCE.voltageCompUp);
 
         button(() -> gamepad2.left_bumper).whenBecomesTrue(Catapults.INSTANCE.stabilize);
+        button(() -> gamepad2.a).whenBecomesTrue(new InstantCommand(() -> Intake.INSTANCE.resetCount()));
 
     }
 }
