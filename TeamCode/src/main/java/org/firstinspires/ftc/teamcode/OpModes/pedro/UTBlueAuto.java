@@ -27,7 +27,6 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 @Autonomous(name = "UT9Blue")
-
 public class UTBlueAuto extends NextFTCOpMode {
     public UTBlueAuto(){
         addComponents(
@@ -42,11 +41,11 @@ public class UTBlueAuto extends NextFTCOpMode {
     private final Pose score = new Pose(37, 114, Math.toRadians(142));
     private final Pose line2Start = new Pose(48, 57, Math.toRadians(180));
     private final Pose line2End = new Pose(24, 57, Math.toRadians(180));
-    private final Pose openGate = new Pose(27, 78, Math.toRadians(180));
+    private final Pose openGate = new Pose(30, 78, Math.toRadians(180));
     private final Pose line1Start = new Pose(48, 82, Math.toRadians(180));
     private final Pose line1End = new Pose(27, 82, Math.toRadians(180));
     private final Pose line3Start = new Pose(48, 33, Math.toRadians(180));
-    private final Pose line3End = new Pose(24, 33, Math.toRadians(180));
+    private final Pose line3End = new Pose(20, 33, Math.toRadians(180));
     private final Pose leavePose = new Pose(43, 127, Math.toRadians(142));
 
     private PathChain score1, line1StartPath, line1EndPath, gate1, score2, line2StartPath, line2EndPath, gate2, score3, line3StartPath, line3EndPath, score4, leave;

@@ -32,8 +32,8 @@ public class Teleop extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        //button(() -> Intake.INSTANCE.getCount() > 3)
-          //      .whenTrue(new SequentialGroup(Intake.INSTANCE.reverse, new Delay(0.5), Intake.INSTANCE.resetCount).setInterruptible(false));
+        button(() -> Intake.INSTANCE.getCount() > 3)
+                .whenTrue(new SequentialGroup(Intake.INSTANCE.reverse, new Delay(0.5), new InstantCommand(() -> Intake.INSTANCE.resetCount())).setInterruptible(false));
 
         button(() -> gamepad1.left_bumper).whenTrue(Drivetrain.INSTANCE.strafeLeft);
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
