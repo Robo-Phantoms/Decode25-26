@@ -44,7 +44,7 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
     private final Pose line2End = new Pose(20, 56.5, Math.toRadians(180)).mirror();
     private final Pose openGate = new Pose(26, 64, Math.toRadians(180)).mirror();
     private final Pose openGateIntake = new Pose(9.75, 56, Math.toRadians(150)).mirror();
-    private final Pose line1Start = new Pose(48, 81.5, Math.toRadians(180)).mirror();
+    private final Pose line1Start = new Pose(50, 81.5, Math.toRadians(180)).mirror();
     private final Pose line1End = new Pose(23, 81.5, Math.toRadians(180)).mirror();
     private final Pose line3Start = new Pose(48, 32, Math.toRadians(180)).mirror();
     private final Pose line3End = new Pose(20, 32, Math.toRadians(180)).mirror();
@@ -60,15 +60,6 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed(){
-        /*
-        button(() -> Intake.INSTANCE.getCount() > 3)
-               .whenTrue(
-                       new SequentialGroup(
-                               Intake.INSTANCE.reverse.endAfter(0.5),
-                               new InstantCommand(() -> Intake.INSTANCE.resetCount()).setInterruptible(true)
-                       ));
-        */
-
         new SequentialGroup(
                 Catapults.INSTANCE.down,
                 new FollowPath(score1),
@@ -89,11 +80,6 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
                 new ParallelGroup(Intake.INSTANCE.reverse, new FollowPath(score3)),
                 Intake.INSTANCE.stop,
                 new Delay(0.25),
-                Catapults.INSTANCE.stabilize,
-                new Delay(0.1),
-                Catapults.INSTANCE.stabilize,
-                new Delay(1.0),
-
                 new ParallelGroup(Catapults.INSTANCE.shoot2, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //9
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(line1StartPath)),
                 new FollowPath(line1EndPath),
