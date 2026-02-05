@@ -39,8 +39,8 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
     private final  Pose score = new Pose(35, 116, Math.toRadians(142));
     private final Pose line2Start = new Pose(48, 57, Math.toRadians(180));
     private final Pose line2End = new Pose(20, 57, Math.toRadians(180));
-    private final Pose openGate = new Pose(24, 66, Math.toRadians(180));
-    private final Pose openGateIntake = new Pose(9.25, 58, Math.toRadians(135));
+    private final Pose openGate = new Pose(23, 66, Math.toRadians(180));
+    private final Pose openGateIntake = new Pose(9.75, 60, Math.toRadians(130));
     private final Pose line1Start = new Pose(48, 82, Math.toRadians(180));
     private final Pose line1End = new Pose(26, 82, Math.toRadians(180));
     private final Pose line3Start = new Pose(48, 33, Math.toRadians(180));
