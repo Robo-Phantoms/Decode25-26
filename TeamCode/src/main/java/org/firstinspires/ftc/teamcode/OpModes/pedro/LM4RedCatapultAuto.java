@@ -8,7 +8,6 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.internal.network.NetworkSetupRunnable;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Catapults;
 import org.firstinspires.ftc.teamcode.util.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.pedroPathing.Constants;
@@ -39,15 +38,15 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
         );
     }
     private final Pose start = new Pose(23, 126, Math.toRadians(142)).mirror();
-    private final  Pose score = new Pose(37, 114, Math.toRadians(142)).mirror();
-    private final Pose line2Start = new Pose(48, 56.5, Math.toRadians(180)).mirror();
-    private final Pose line2End = new Pose(20, 56.5, Math.toRadians(180)).mirror();
+    private final Pose score = new Pose(35, 114, Math.toRadians(142)).mirror();
+    private final Pose line2Start = new Pose(48, 57.5, Math.toRadians(180)).mirror();
+    private final Pose line2End = new Pose(20, 57.5, Math.toRadians(180)).mirror();
     private final Pose openGate = new Pose(26, 64, Math.toRadians(180)).mirror();
     private final Pose openGateIntake = new Pose(9.75, 56, Math.toRadians(150)).mirror();
     private final Pose line1Start = new Pose(50, 81.5, Math.toRadians(180)).mirror();
     private final Pose line1End = new Pose(23, 81.5, Math.toRadians(180)).mirror();
-    private final Pose line3Start = new Pose(48, 32, Math.toRadians(180)).mirror();
-    private final Pose line3End = new Pose(20, 32, Math.toRadians(180)).mirror();
+    private final Pose line3Start = new Pose(48, 33, Math.toRadians(180)).mirror();
+    private final Pose line3End = new Pose(20, 33, Math.toRadians(180)).mirror();
     private final Pose leavePose = new Pose(43, 127, Math.toRadians(142)).mirror();
 
     private PathChain score1, line2StartPath, line2EndPath, score2, open, score3, line1StartPath, line1EndPath,  score4, line3StartPath, line3EndPath, score5, leave;
@@ -76,7 +75,7 @@ public class LM4RedCatapultAuto extends NextFTCOpMode {
                 new Delay(1.0),
                 new ParallelGroup(Catapults.INSTANCE.shoot3, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //6
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(open)),
-                new WaitUntil(() -> Intake.INSTANCE.getCount() == 3).endAfter(1.5),
+                new WaitUntil(() -> Intake.INSTANCE.getCount() == 3).endAfter(1),
                 new ParallelGroup(Intake.INSTANCE.reverse, new FollowPath(score3)),
                 Intake.INSTANCE.stop,
                 new Delay(0.25),

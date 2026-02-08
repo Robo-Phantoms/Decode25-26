@@ -43,8 +43,8 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
     private final Pose openGateIntake = new Pose(9.75, 60, Math.toRadians(130));
     private final Pose line1Start = new Pose(48, 82, Math.toRadians(180));
     private final Pose line1End = new Pose(26, 82, Math.toRadians(180));
-    private final Pose line3Start = new Pose(48, 33, Math.toRadians(180));
-    private final Pose line3End = new Pose(22.5, 33, Math.toRadians(180));
+    private final Pose line3Start = new Pose(48, 33.5, Math.toRadians(180));
+    private final Pose line3End = new Pose(22.5, 33.5, Math.toRadians(180));
     private final Pose leavePose = new Pose(43, 127, Math.toRadians(142));
 
     private PathChain score1, line2StartPath, line2EndPath, score2, open, score3, line1StartPath, line1EndPath,  score4, line3StartPath, line3EndPath, score5, leave;
@@ -76,7 +76,7 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
                 new Delay(1.0),
                 new ParallelGroup(Catapults.INSTANCE.shoot3, new InstantCommand(() -> Intake.INSTANCE.resetCount())), //6
                 new ParallelGroup(Intake.INSTANCE.run, new FollowPath(open)),
-                new WaitUntil(() -> Intake.INSTANCE.getCount() == 3).endAfter(1.5),
+                new WaitUntil(() -> Intake.INSTANCE.getCount() == 3).endAfter(1),
                 new ParallelGroup(Intake.INSTANCE.reverse, new FollowPath(score3)),
                 Intake.INSTANCE.stop,
                 new Delay(0.25),
