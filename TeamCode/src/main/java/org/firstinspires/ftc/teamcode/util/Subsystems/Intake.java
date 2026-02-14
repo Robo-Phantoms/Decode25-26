@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.util.Subsystems;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.Controllable;
 import dev.nextftc.hardware.impl.MotorEx;
@@ -25,6 +28,9 @@ public class Intake implements Subsystem {
     public Command run = instant(() -> intake.setPower(1.0)).requires(this);
     public Command stop = instant(() -> intake.setPower(0)).requires(this);
     public Command reverse = instant(() -> intake.setPower(-1.0)).requires(this);
+
+    public Command overload = new SequentialGroup(Intake.INSTANCE.reverse, new Delay(0.5), new InstantCommand(() -> Intake.INSTANCE.resetCount()))
+            .setInterruptible(false).requires(this);
     public void resetCount(){
         count = 0;
         reverse.cancel();

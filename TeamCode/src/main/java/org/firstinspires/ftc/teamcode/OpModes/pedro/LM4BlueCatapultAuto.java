@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.OpModes.pedro;
 
 import static dev.nextftc.bindings.Bindings.button;
@@ -25,7 +26,7 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "LM4BlueAuto")
+//@Autonomous(name = "LM4BlueAuto")
 public class LM4BlueCatapultAuto extends NextFTCOpMode {
     public LM4BlueCatapultAuto(){
         addComponents(
@@ -57,8 +58,8 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed(){
-        /*button(() -> Intake.INSTANCE.getCount() > 3)
-                .whenTrue(new SequentialGroup(Intake.INSTANCE.reverse, new Delay(0.5), new InstantCommand(() -> Intake.INSTANCE.resetCount())).setInterruptible(false));*/
+        button(() -> Intake.INSTANCE.getCount() > 3)
+                .whenTrue(Intake.INSTANCE.overload);
 
         new SequentialGroup(
                 Catapults.INSTANCE.down,
