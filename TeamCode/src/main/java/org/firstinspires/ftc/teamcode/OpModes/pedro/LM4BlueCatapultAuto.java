@@ -58,8 +58,8 @@ public class LM4BlueCatapultAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed(){
-        button(() -> Intake.INSTANCE.getCount() > 3)
-                .whenTrue(Intake.INSTANCE.overload);
+        /*button(() -> Intake.INSTANCE.getCount() > 3)
+                .whenTrue(Intake.INSTANCE.overload);*/
 
         new SequentialGroup(
                 Catapults.INSTANCE.down,

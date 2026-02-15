@@ -29,7 +29,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 @Config
-@TeleOp(name="BlueTele")
+@TeleOp(name="BlueTeleop")
 public class BlueTele extends NextFTCOpMode {
 
     public BlueTele() {
@@ -41,28 +41,14 @@ public class BlueTele extends NextFTCOpMode {
         );
     }
 
-    private final Pose blueParkPose = new Pose(39, 34).mirror();
-    private Supplier<PathChain> bluePark;
-
-    @Override
-    public void onInit(){
-        follower().setStartingPose(SoloRedAuto.endPose);
-
-        bluePark = () -> follower().pathBuilder()
-                .addPath(new Path(new BezierLine(follower()::getPose, blueParkPose)))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower()::getHeading, Math.toRadians(180), 0.8))
-                .build();
-    }
-
     @Override
     public void onStartButtonPressed() {
-        button(() -> Intake.INSTANCE.getCount() > 3).whenTrue(Intake.INSTANCE.overload);
+        //button(() -> Intake.INSTANCE.getCount() > 3).whenTrue(Intake.INSTANCE.overload);
 
         button(() -> gamepad1.left_bumper).whenTrue(Drivetrain.INSTANCE.strafeLeft);
         button(()-> gamepad1.right_bumper).whenTrue(Drivetrain.INSTANCE.strafeRight);
         button(() -> gamepad1.y).whenTrue(Drivetrain.INSTANCE.forward);
         button(() -> gamepad1.a).whenTrue(Drivetrain.INSTANCE.backward);
-        button(() -> gamepad1.x).whenBecomesTrue(new FollowPath(bluePark.get()));
 
 
         range(() -> gamepad2.right_stick_y).inRange(-0.1, 0.1)
