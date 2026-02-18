@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.OpModes.pedro;
 
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -16,33 +17,27 @@ import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
-import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
-
-@Autonomous(name = "PartnerBlue", group = "Regional Championship Autos")
-public class PartnerBlueAuto extends NextFTCOpMode {
-    public PartnerBlueAuto(){
+@Autonomous(name = "OmenBlue")
+public class OmenBlue extends NextFTCOpMode {
+    public OmenBlue(){
         addComponents(
-                new SubsystemComponent(Catapults.INSTANCE, Intake.INSTANCE),
+                new SubsystemComponent(Intake.INSTANCE, Catapults.INSTANCE),
                 new PedroComponent(Constants::createFollower),
-                BulkReadComponent.INSTANCE,
-                BindingsComponent.INSTANCE
+                BulkReadComponent.INSTANCE
         );
     }
-
     // -------- Poses -------- //
     private final Pose startPose = new Pose(23.5, 125, Math.toRadians(144));
     private final  Pose scorePose = new Pose(36, 114, Math.toRadians(144));
     private final Pose line2StartPose = new Pose(42, 60, Math.toRadians(180));
     private final Pose line2EndPose = new Pose(24, 60, Math.toRadians(180));
     private final Pose openGatePose = new Pose(24, 63, Math.toRadians(180));
-    private final Pose gateIntakePose = new Pose(13, 54, Math.toRadians(140));
     private final Pose line1StartPose = new Pose(45, 84, Math.toRadians(180));
     private final Pose line1EndPose = new Pose(24, 84, Math.toRadians(180));
     private final Pose line3StartPose = new Pose(45, 36, Math.toRadians(180));
@@ -58,10 +53,8 @@ public class PartnerBlueAuto extends NextFTCOpMode {
     private final Pose cScore4 = new Pose(50, 92);
     private final Pose cScore5 = new Pose(52, 110);
     private final Pose cOpenGate = new Pose(37, 62);
-    private final Pose cGateIntake = new Pose(26, 57);
 
-    // -------- Path Chains -------- //
-    private PathChain score1, line1, score2, line2, openGate, score3, line3, score4, leave;
+    private PathChain score1, line3, score2, line2, openGate1, score3, line1, score4, leave;
 
     public Command intake(PathChain p){
         return new SequentialGroup(
@@ -70,9 +63,9 @@ public class PartnerBlueAuto extends NextFTCOpMode {
         );
     }
 
-    public Command shoot(PathChain p){
+    public Command shoot(PathChain path){
         return new SequentialGroup(
-                new ParallelGroup(new FollowPath(p), Intake.INSTANCE.reverse),
+                new ParallelGroup(new FollowPath(path), Intake.INSTANCE.reverse),
                 Intake.INSTANCE.stop,
                 Catapults.INSTANCE.stabilize,
                 new Delay(0.1),
@@ -84,23 +77,21 @@ public class PartnerBlueAuto extends NextFTCOpMode {
 
     @Override
     public void onInit(){
-        follower().setStartingPose(startPose);
-
         score1 = follower().pathBuilder()
                 .addPath(new BezierLine(startPose, scorePose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+                .setConstantHeadingInterpolation(scorePose.getHeading())
                 .build();
 
-        line1 = follower().pathBuilder()
-                .addPath(new BezierCurve(scorePose, cLine1, line1StartPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), line1StartPose.getHeading())
-                .addPath(new BezierLine(line1StartPose, line1EndPose))
-                .setConstantHeadingInterpolation(line1EndPose.getHeading())
+        line3 = follower().pathBuilder()
+                .addPath(new BezierCurve(scorePose, cLine3, line3StartPose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), line3StartPose.getHeading())
+                .addPath(new BezierLine(line3StartPose, line3EndPose))
+                .setConstantHeadingInterpolation(line3EndPose.getHeading())
                 .build();
 
         score2 = follower().pathBuilder()
-                .addPath(new BezierCurve(line1EndPose, cScore4, scorePose))
-                .setLinearHeadingInterpolation(line1EndPose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierCurve(line3EndPose, cScore5, scorePose))
+                .setLinearHeadingInterpolation(line3EndPose.getHeading(), scorePose.getHeading())
                 .build();
 
         line2 = follower().pathBuilder()
@@ -110,32 +101,33 @@ public class PartnerBlueAuto extends NextFTCOpMode {
                 .setConstantHeadingInterpolation(line2EndPose.getHeading())
                 .build();
 
-       openGate = follower().pathBuilder()
-               .addPath(new BezierCurve(line2EndPose, cOpenGate, openGatePose))
-               .setLinearHeadingInterpolation(line2EndPose.getHeading(), openGatePose.getHeading())
-               .build();
+        openGate1 = follower().pathBuilder()
+                .addPath(new BezierCurve(line2EndPose, cOpenGate, openGatePose))
+                .setLinearHeadingInterpolation(line2EndPose.getHeading(), openGatePose.getHeading())
+                .build();
 
-       score3 = follower().pathBuilder()
-               .addPath(new BezierCurve(openGatePose, cScore4, scorePose))
-               .setLinearHeadingInterpolation(line1EndPose.getHeading(), scorePose.getHeading())
-               .build();
+        score3 = follower().pathBuilder()
+                .addPath(new BezierCurve(openGatePose, new Pose(68, 56), scorePose))
+                .setLinearHeadingInterpolation(openGatePose.getHeading(), scorePose.getHeading())
+                .build();
 
-       line3 = follower().pathBuilder()
-               .addPath(new BezierCurve(scorePose, cLine3, line3StartPose))
-               .setLinearHeadingInterpolation(scorePose.getHeading(), line3StartPose.getHeading())
-               .addPath(new BezierLine(line3StartPose, line3EndPose))
-               .setConstantHeadingInterpolation(line3EndPose.getHeading())
-               .build();
+        line1 = follower().pathBuilder()
+                .addPath(new BezierCurve(scorePose, cLine1, line1StartPose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), line1StartPose.getHeading())
+                .addPath(new BezierLine(line1StartPose, line1EndPose))
+                .setConstantHeadingInterpolation(line1EndPose.getHeading())
+                .build();
 
-       score4 = follower().pathBuilder()
-               .addPath(new BezierCurve(line3EndPose, cScore5, scorePose))
-               .setLinearHeadingInterpolation(line3EndPose.getHeading(), scorePose.getHeading())
-               .build();
+        score4 = follower().pathBuilder()
+                .addPath(new BezierCurve(line1EndPose, cScore4, scorePose))
+                .setLinearHeadingInterpolation(line1EndPose.getHeading(), scorePose.getHeading())
+                .build();
 
-       leave = follower().pathBuilder()
-               .addPath(new BezierLine(scorePose, leavePose))
-               .setConstantHeadingInterpolation(leavePose.getHeading())
-               .build();
+        leave = follower().pathBuilder()
+                .addPath(new BezierLine(scorePose, leavePose))
+                .setConstantHeadingInterpolation(leavePose.getHeading())
+                .build();
+
     }
 
     @Override
@@ -145,13 +137,12 @@ public class PartnerBlueAuto extends NextFTCOpMode {
                 new FollowPath(score1),
                 new Delay(0.5),
                 Catapults.INSTANCE.shoot3,
-                intake(line1),
+                intake(line3),
                 shoot(score2),
                 intake(line2),
-                new FollowPath(openGate),
-                new Delay(0.5),
+                new FollowPath(openGate1),
                 shoot(score3),
-                intake(line3),
+                intake(line1),
                 shoot(score4),
                 new FollowPath(leave)
         ).schedule();
