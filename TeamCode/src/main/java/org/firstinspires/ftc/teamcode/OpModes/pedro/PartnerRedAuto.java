@@ -64,7 +64,7 @@ public class PartnerRedAuto extends NextFTCOpMode {
     private final Pose cGateIntake = new Pose(26, 57).mirror();
 
     // -------- Path Chains -------- //
-    private PathChain score1, line1, score2, line2, openGate, score3, line3, score4, leave;
+    private PathChain score1, line1, score2, line2, openGate, openGate2, score3, line3, score4, leave;
 
     public Command intake(PathChain p){
         return new SequentialGroup(
@@ -75,7 +75,7 @@ public class PartnerRedAuto extends NextFTCOpMode {
 
     public Command shoot(PathChain p){
         return new SequentialGroup(
-                new ParallelGroup(new FollowPath(p), Intake.INSTANCE.reverse),
+                new ParallelGroup(new FollowPath(p), Intake.INSTANCE.run),
                 Intake.INSTANCE.stop,
                 Catapults.INSTANCE.stabilize,
                 new Delay(0.1),
@@ -101,8 +101,13 @@ public class PartnerRedAuto extends NextFTCOpMode {
                 .setConstantHeadingInterpolation(line1EndPose.getHeading())
                 .build();
 
+        openGate = follower().pathBuilder()
+                .addPath(new BezierCurve(line1EndPose, cOpenGate, openGatePose))
+                .setLinearHeadingInterpolation(line1EndPose.getHeading(), openGatePose.getHeading())
+                .build();
+
         score2 = follower().pathBuilder()
-                .addPath(new BezierCurve(line1EndPose, cScore4, scorePose))
+                .addPath(new BezierCurve(openGatePose, cScore4, scorePose))
                 .setLinearHeadingInterpolation(line1EndPose.getHeading(), scorePose.getHeading())
                 .build();
 
@@ -113,7 +118,7 @@ public class PartnerRedAuto extends NextFTCOpMode {
                 .setConstantHeadingInterpolation(line2EndPose.getHeading())
                 .build();
 
-        openGate = follower().pathBuilder()
+        openGate2 = follower().pathBuilder()
                 .addPath(new BezierCurve(line2EndPose, cOpenGate, openGatePose))
                 .setLinearHeadingInterpolation(line2EndPose.getHeading(), openGatePose.getHeading())
                 .build();
@@ -149,9 +154,11 @@ public class PartnerRedAuto extends NextFTCOpMode {
                 new Delay(0.5),
                 Catapults.INSTANCE.shoot3,
                 intake(line1),
+                new FollowPath(openGate),
+                new Delay(0.5),
                 shoot(score2),
                 intake(line2),
-                new FollowPath(openGate),
+                new FollowPath(openGate2),
                 new Delay(0.5),
                 shoot(score3),
                 intake(line3),

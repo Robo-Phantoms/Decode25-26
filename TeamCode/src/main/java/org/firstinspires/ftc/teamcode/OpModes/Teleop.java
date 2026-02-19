@@ -21,7 +21,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 @Config
-@TeleOp(name="BlueTeleop")
+@TeleOp(name="Teleop")
 public class Teleop extends NextFTCOpMode {
 
     public Teleop() {

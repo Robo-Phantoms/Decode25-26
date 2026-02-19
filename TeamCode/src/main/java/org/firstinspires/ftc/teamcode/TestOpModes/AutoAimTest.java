@@ -12,7 +12,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 
-@TeleOp(name = "AutoAimTest")
+//@TeleOp(name = "AutoAimTest")
 public class AutoAimTest extends NextFTCOpMode {
     public AutoAimTest(){
         addComponents(

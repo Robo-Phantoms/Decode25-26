@@ -37,7 +37,7 @@ public class OmenBlue extends NextFTCOpMode {
     private final  Pose scorePose = new Pose(36, 114, Math.toRadians(144));
     private final Pose line2StartPose = new Pose(42, 60, Math.toRadians(180));
     private final Pose line2EndPose = new Pose(24, 60, Math.toRadians(180));
-    private final Pose openGatePose = new Pose(24, 63, Math.toRadians(180));
+    private final Pose openGatePose = new Pose(23, 63, Math.toRadians(180));
     private final Pose line1StartPose = new Pose(45, 84, Math.toRadians(180));
     private final Pose line1EndPose = new Pose(24, 84, Math.toRadians(180));
     private final Pose line3StartPose = new Pose(45, 36, Math.toRadians(180));
@@ -47,11 +47,11 @@ public class OmenBlue extends NextFTCOpMode {
     // -------- Control Points -------- //
     private final Pose cLine2 = new Pose(77, 56);
     private final Pose cLine1 = new Pose(62, 81);
-    private final Pose cLine3 = new Pose(68, 30);
+    private final Pose cLine3 = new Pose(78, 52);
     private final Pose cScore2 = new Pose(70, 67);
     private final Pose cScore3 = new Pose(77, 66);
     private final Pose cScore4 = new Pose(50, 92);
-    private final Pose cScore5 = new Pose(52, 110);
+    private final Pose cScore5 = new Pose(83, 30);
     private final Pose cOpenGate = new Pose(37, 62);
 
     private PathChain score1, line3, score2, line2, openGate1, score3, line1, score4, leave;
@@ -77,6 +77,8 @@ public class OmenBlue extends NextFTCOpMode {
 
     @Override
     public void onInit(){
+        follower().setStartingPose(startPose);
+
         score1 = follower().pathBuilder()
                 .addPath(new BezierLine(startPose, scorePose))
                 .setConstantHeadingInterpolation(scorePose.getHeading())
@@ -140,7 +142,8 @@ public class OmenBlue extends NextFTCOpMode {
                 intake(line3),
                 shoot(score2),
                 intake(line2),
-                new FollowPath(openGate1),
+                new FollowPath(openGate1, true, 0.75),
+                new Delay(1.5),
                 shoot(score3),
                 intake(line1),
                 shoot(score4),

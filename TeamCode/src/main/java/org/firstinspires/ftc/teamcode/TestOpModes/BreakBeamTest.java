@@ -12,7 +12,7 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@TeleOp(name = "break beam test")
+//@TeleOp(name = "break beam test")
 public class BreakBeamTest extends NextFTCOpMode {
     public BreakBeamTest(){
         addComponents(

@@ -38,7 +38,7 @@ public class OmenRed extends NextFTCOpMode {
     private final  Pose scorePose = new Pose(36, 112, Math.toRadians(144)).mirror();
     private final Pose line2StartPose = new Pose(42, 58, Math.toRadians(180)).mirror();
     private final Pose line2EndPose = new Pose(27, 58, Math.toRadians(180)).mirror();
-    private final Pose openGatePose = new Pose(22, 67, Math.toRadians(180)).mirror();
+    private final Pose openGatePose = new Pose(21, 67, Math.toRadians(180)).mirror();
     private final Pose gateIntakePose = new Pose(13, 54, Math.toRadians(140)).mirror();
     private final Pose line1StartPose = new Pose(45, 84, Math.toRadians(180)).mirror();
     private final Pose line1EndPose = new Pose(25, 84, Math.toRadians(180)).mirror();
@@ -52,11 +52,11 @@ public class OmenRed extends NextFTCOpMode {
     // -------- Control Points -------- //
     private final Pose cLine2 = new Pose(77, 56).mirror();
     private final Pose cLine1 = new Pose(62, 81).mirror();
-    private final Pose cLine3 = new Pose(68, 30).mirror();
+    private final Pose cLine3 = new Pose(78, 52).mirror();
     private final Pose cScore2 = new Pose(70, 67).mirror();
     private final Pose cScore3 = new Pose(77, 66).mirror();
     private final Pose cScore4 = new Pose(50, 92).mirror();
-    private final Pose cScore5 = new Pose(52, 110).mirror();
+    private final Pose cScore5 = new Pose(83, 30).mirror();
     private final Pose cOpenGate = new Pose(37, 62).mirror();
 
     private PathChain score1, line3, score2, line2, openGate1, score3, line1, score4, leave;
@@ -82,6 +82,7 @@ public class OmenRed extends NextFTCOpMode {
 
     @Override
     public void onInit(){
+        follower().setStartingPose(startPose);
         score1 = follower().pathBuilder()
                 .addPath(new BezierLine(startPose, scorePose))
                 .setConstantHeadingInterpolation(scorePose.getHeading())
@@ -145,7 +146,8 @@ public class OmenRed extends NextFTCOpMode {
                 intake(line3),
                 shoot(score2),
                 intake(line2),
-                new FollowPath(openGate1),
+                new FollowPath(openGate1, true, 0.75),
+                new Delay(1.5),
                 shoot(score3),
                 intake(line1),
                 shoot(score4),

@@ -21,7 +21,7 @@ import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
 @Config
-@TeleOp(name = "Launcher Test")
+//@TeleOp(name = "Launcher Test")
 public class LauncherTest extends NextFTCOpMode {
 
     public LauncherTest(){
