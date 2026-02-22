@@ -44,8 +44,8 @@ public class SoloBlueAuto extends NextFTCOpMode {
     // -------- Poses -------- //
     private final Pose startPose = new Pose(23.5, 125, Math.toRadians(144));
     private final  Pose scorePose = new Pose(36, 114, Math.toRadians(144));
-    private final Pose line2StartPose = new Pose(42, 60, Math.toRadians(180));
-    private final Pose line2EndPose = new Pose(24, 60, Math.toRadians(180));
+    private final Pose line2StartPose = new Pose(42, 59, Math.toRadians(180));
+    private final Pose line2EndPose = new Pose(24, 59, Math.toRadians(180));
     private final Pose openGatePose = new Pose(24, 63, Math.toRadians(180));
     private final Pose gateIntakePose = new Pose(13, 54, Math.toRadians(140));
     private final Pose line1StartPose = new Pose(45, 84, Math.toRadians(180));
